@@ -48,6 +48,9 @@ repeat {
   cpuTemps[type] = temp
 } while true
 
+for (key, temp) in cpuTemps {
+  print(key, temp)
+}
 // /sys/class/thermal/thermal_zone*/temp (millidegrees C)
 #endif
 
