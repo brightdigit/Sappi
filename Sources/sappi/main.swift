@@ -95,7 +95,7 @@ for volume in volumes {
 let memory = SysInfo.Memory
 let total : Int
 let free : Int
-if let memtotal = memory["MemTotal"], let memfree = memory["MemFree"] {
+if let memtotal = memory["MemTotal"], let memfree = memory["MemAvailable"] {
   total = memtotal
   free = memfree
 } else {
