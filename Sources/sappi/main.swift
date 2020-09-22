@@ -3,6 +3,8 @@ import ArgumentParser
 import PerfectSysInfo
 import NetUtils
 
+
+#if canImport(IOKit)
 let smc = SMCService()
 let keys = smc.getAllKeys()
 for key in keys {
@@ -10,6 +12,7 @@ for key in keys {
     print(key, value)
   }
 }
+#endif
 //let temperature = smc.getValue("TC0C") ?? smc.getValue("TC0D") ?? smc.getValue("TC0P") ?? smc.getValue("TC0E")
 //print(temperature)
 /**
