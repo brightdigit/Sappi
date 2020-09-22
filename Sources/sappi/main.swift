@@ -2,6 +2,16 @@ import Foundation
 import ArgumentParser
 import PerfectSysInfo
 import NetUtils
+
+let smc = SMCService()
+let keys = smc.getAllKeys()
+for key in keys {
+  if let value = smc.getValue(key) {
+    print(key, value)
+  }
+}
+//let temperature = smc.getValue("TC0C") ?? smc.getValue("TC0D") ?? smc.getValue("TC0P") ?? smc.getValue("TC0E")
+//print(temperature)
 /**
  System load:            0.0
  Usage of /:             5.5% of 116.92GB
