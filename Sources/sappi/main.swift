@@ -19,14 +19,27 @@ import NetUtils
  IPv6 address for wlan0: 2600:1702:4050:7d30:ba27:ebff:fea1:494b
  */
 
+enum OS {
+  case macOS
+  case linux
+}
+
+struct TemperatureCollection {
+  let os : OS
+  let temperatures : [String : Double]
+}
+let temperatures : [String : Double]
 #if canImport(IOKit)
 let smc = SMCService()
 let keys = smc.getAllKeys()
-for key in keys {
-  if let value = smc.getValue(key) {
-    print(key, value)
-  }
-}
+temperatures = Dictionary.init(uniqueKeysWithValues: keys.map{
+  ($0, smc.getValue($0))
+}).compactMapValues{ $0 }
+//for key in keys {
+//  if let value = smc.getValue(key) {
+//    print(key, value)
+//  }
+//}
 // https://superuser.com/questions/553197/interpreting-sensor-names
 #else
 
@@ -34,14 +47,13 @@ let baseURL = URL(fileURLWithPath: "/sys/class/thermal/")
 var cpuTemps = [String: Int]()
 repeat {
   let dirURL = baseURL.appendingPathComponent("thermal_zone\(cpuTemps.count)")
-print(dirURL)  
 let type : String
   let tempStr  : String
   do {
     type = try String(contentsOf: dirURL.appendingPathComponent("type"))
     tempStr = try String(contentsOf: dirURL.appendingPathComponent("temp"))
   } catch {
-print(error)
+//print(error)
     break
   }
 
@@ -50,10 +62,7 @@ print(error)
   }
   cpuTemps[type.trimmingCharacters(in: .whitespacesAndNewlines)] = temp
 } while true
-
-for (key, temp) in cpuTemps {
-  print("key", key, temp)
-}
+temperatures = cpuTemps.mapValues{ Double($0) / 1000.0}
 // /sys/class/thermal/thermal_zone*/temp (millidegrees C)
 #endif
 
@@ -66,7 +75,9 @@ if let cpu = SysInfo.CPU["cpu"] {
   cpuValue = nil
 }
 
-print("CPU Usage:", cpuValue.map{ $0 * 100.0})
+if let cpuPercent = cpuValue.map({ $0 * 100.0}) {
+  print("CPU Usage:", cpuPercent)
+}
 
 //print(SysInfo.Disk)
 let url = URL(fileURLWithPath: "/Volumes")
@@ -81,7 +92,21 @@ for volume in volumes {
   let name =  resourceValues.volumeName ?? volume.path
   print("Usage of \(name):", usage * 100.0)
 }
+let memory = SysInfo.Memory
+let total : Int
+let free : Int
+if let memtotal = memory["MemTotal"], let memfree = memory["MemFree"] {
+  total = memtotal
+  free = memfree
+} else {
+  
+  let totalKeys = ["free", "active", "inactive", "wired"]
 
+  total = memory.filter{totalKeys.contains($0.key)}.map{ $0.value }.reduce(0, +)
+  free = memory["free"] ?? 0
+}
+
+print("Memory usage:", 100 - (free*100/total) )
 
 #if canImport(Darwin)
 var mib : [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0]
@@ -98,7 +123,5 @@ for dir : URL in contents {
   
 }
 print("processes:", count)
-
-//ls /proc/*/task | grep ":" | wc -l
 #endif
 
