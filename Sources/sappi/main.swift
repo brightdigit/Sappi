@@ -3,18 +3,6 @@ import ArgumentParser
 import PerfectSysInfo
 import NetUtils
 
-
-#if canImport(IOKit)
-let smc = SMCService()
-let keys = smc.getAllKeys()
-for key in keys {
-  if let value = smc.getValue(key) {
-    print(key, value)
-  }
-}
-#endif
-//let temperature = smc.getValue("TC0C") ?? smc.getValue("TC0D") ?? smc.getValue("TC0P") ?? smc.getValue("TC0E")
-//print(temperature)
 /**
  System load:            0.0
  Usage of /:             5.5% of 116.92GB
@@ -31,7 +19,18 @@ for key in keys {
  IPv6 address for wlan0: 2600:1702:4050:7d30:ba27:ebff:fea1:494b
  */
 
-//print(SysInfo.CPU)
+#if canImport(IOKit)
+let smc = SMCService()
+let keys = smc.getAllKeys()
+for key in keys {
+  if let value = smc.getValue(key) {
+    print(key, value)
+  }
+}
+// https://superuser.com/questions/553197/interpreting-sensor-names
+#else
+// /sys/class/thermal/thermal_zone*/temp (millidegrees C)
+#endif
 
 let cpuValue : Double?
 if let cpu = SysInfo.CPU["cpu"] {
@@ -43,7 +42,6 @@ if let cpu = SysInfo.CPU["cpu"] {
 }
 
 print("CPU Usage:", cpuValue.map{ $0 * 100.0})
-//print(SysInfo.Memory)
 
 print(SysInfo.Disk)
 let url = URL(fileURLWithPath: "/Volumes")
@@ -59,9 +57,14 @@ for volume in volumes {
   print("Usage of \(name):", usage * 100.0)
 }
 
-//URL.resourceValues(forKeys: [.volumeAvailableCapacityKey, ], fromBookmarkData: <#T##Data#>)
 
-//print(SysInfo.Net)
-//print(Interface.allInterfaces())
+#if canImport(Darwin)
+var mib : [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0]
+var size = 0
+let ret = sysctl(&mib, 4, nil, &size, nil, 0)
+print("processes:", size/MemoryLayout<kinfo_proc>.size)
+#else
 
+//ls /proc/*/task | grep ":" | wc -l
+#endif
 
