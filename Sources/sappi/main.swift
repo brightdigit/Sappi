@@ -29,6 +29,25 @@ for key in keys {
 }
 // https://superuser.com/questions/553197/interpreting-sensor-names
 #else
+
+let baseURL = URL(fileURLWithPath: "/sys/class/thermal/")
+var cpuTemps = [String: Int]()
+repeat {
+  let dirURL = baseURL.appendingPathComponent("thermal_zone\(cpuTemps.count)")
+  let type : String
+  let tempStr  : String
+  do {
+    type = try String(contentsOf: dirURL.appendingPathComponent("type"))
+    tempStr = try String(contentsOf: dirURL.appendingPathComponent("temp"))
+  } catch {
+    break
+  }
+  guard let temp = Int(tempStr) else {
+    break
+  }
+  cpuTemps[type] = temp
+} while true
+
 // /sys/class/thermal/thermal_zone*/temp (millidegrees C)
 #endif
 
@@ -58,7 +77,7 @@ for volume in volumes {
 }
 
 
-#if  false && canImport(Darwin)
+#if canImport(Darwin)
 var mib : [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0]
 var size = 0
 let ret = sysctl(&mib, 4, nil, &size, nil, 0)
