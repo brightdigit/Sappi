@@ -34,22 +34,25 @@ let baseURL = URL(fileURLWithPath: "/sys/class/thermal/")
 var cpuTemps = [String: Int]()
 repeat {
   let dirURL = baseURL.appendingPathComponent("thermal_zone\(cpuTemps.count)")
-  let type : String
+print(dirURL)  
+let type : String
   let tempStr  : String
   do {
     type = try String(contentsOf: dirURL.appendingPathComponent("type"))
     tempStr = try String(contentsOf: dirURL.appendingPathComponent("temp"))
   } catch {
+print(error)
     break
   }
-  guard let temp = Int(tempStr) else {
+
+  guard let temp = Int(tempStr.trimmingCharacters(in: .whitespacesAndNewlines)) else {
     break
   }
-  cpuTemps[type] = temp
+  cpuTemps[type.trimmingCharacters(in: .whitespacesAndNewlines)] = temp
 } while true
 
 for (key, temp) in cpuTemps {
-  print(key, temp)
+  print("key", key, temp)
 }
 // /sys/class/thermal/thermal_zone*/temp (millidegrees C)
 #endif
@@ -65,7 +68,7 @@ if let cpu = SysInfo.CPU["cpu"] {
 
 print("CPU Usage:", cpuValue.map{ $0 * 100.0})
 
-print(SysInfo.Disk)
+//print(SysInfo.Disk)
 let url = URL(fileURLWithPath: "/Volumes")
 let volumes = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey], options: [])!
 
