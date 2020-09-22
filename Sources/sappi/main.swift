@@ -2,7 +2,6 @@ import Foundation
 import ArgumentParser
 import PerfectSysInfo
 import NetUtils
-import IOKit
 /**
  System load:            0.0
  Usage of /:             5.5% of 116.92GB
@@ -35,7 +34,7 @@ print("CPU Usage:", cpuValue.map{ $0 * 100.0})
 
 print(SysInfo.Disk)
 let url = URL(fileURLWithPath: "/Volumes")
-let volumes = try! FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey], options: [])
+let volumes = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey], options: [])!
 
 for volume in volumes {
   guard let resourceValues = try? volume.resourceValues(forKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey]) else {
