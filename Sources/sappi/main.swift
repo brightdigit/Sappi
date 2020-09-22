@@ -58,12 +58,21 @@ for volume in volumes {
 }
 
 
-#if canImport(Darwin)
+#if  false && canImport(Darwin)
 var mib : [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0]
 var size = 0
 let ret = sysctl(&mib, 4, nil, &size, nil, 0)
 print("processes:", size/MemoryLayout<kinfo_proc>.size)
 #else
+let contents = try! FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: "/proc"), includingPropertiesForKeys: nil, options: [])
+var count = 0
+for dir : URL in contents {
+  if FileManager.default.fileExists(atPath: dir.appendingPathComponent("task").path) {
+    count += 1
+  }
+  
+}
+print("processes:", count)
 
 //ls /proc/*/task | grep ":" | wc -l
 #endif
