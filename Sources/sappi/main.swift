@@ -1,3 +1,4 @@
+import Foundation
 import ArgumentParser
 import PerfectSysInfo
 import NetUtils
@@ -29,9 +30,25 @@ if let cpu = SysInfo.CPU["cpu"] {
   cpuValue = nil
 }
 
-print(cpuValue)
+print("CPU Usage:", cpuValue.map{ $0 * 100.0})
 //print(SysInfo.Memory)
-//print(SysInfo.Disk)
+
+print(SysInfo.Disk)
+let url = URL(fileURLWithPath: "/Volumes")
+let volumes = try! FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey], options: [])
+
+for volume in volumes {
+  guard let resourceValues = try? volume.resourceValues(forKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey]) else {
+    continue
+  }
+  let usage = Double(resourceValues.volumeAvailableCapacity ?? 0 )/Double(resourceValues.volumeTotalCapacity ?? 0)
+  
+  let name =  resourceValues.volumeName ?? volume.path
+  print("Usage of \(name):", usage * 100.0)
+}
+
+//URL.resourceValues(forKeys: [.volumeAvailableCapacityKey, ], fromBookmarkData: <#T##Data#>)
+
 //print(SysInfo.Net)
 //print(Interface.allInterfaces())
 
