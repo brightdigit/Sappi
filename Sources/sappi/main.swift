@@ -3,6 +3,8 @@ import ArgumentParser
 import PerfectSysInfo
 import NetUtils
 
+print("test")
+
 struct Memory {
   let free : Int
   let total : Int
@@ -19,7 +21,7 @@ struct Temperature {
 }
 
 struct CPUData {
-  let temperature : Temperature
+  let temperature : Temperature?
   let idle : Int
   let sum : Int
 }
@@ -84,14 +86,14 @@ extension Array {
     return nil
   }
 }
-
+print("test)")
 var temperatures = [Temperature]()
 let dieTemp : Temperature?
-#if canImport(IOKit) && false
+#if canImport(IOKit)
 let smc = SMCService()
 let indicies = smc.getAllKeys().compactMap(parseTempKey(_:))
 
-let dieTemp = ["TC0C", "TC0D", "TC0P", "TC0E"].firstMap(smc.getValue(_:)).map { (value) -> Temperature in
+dieTemp = ["TC0C", "TC0D", "TC0P", "TC0E"].firstMap(smc.getValue(_:)).map { (value) -> Temperature in
   Temperature(value: Int(value), key: "TC0D")
 }
 guard indicies.count - 1 == indicies.max() else {
@@ -111,6 +113,7 @@ let baseURL = URL(fileURLWithPath: "/sys/class/thermal/")
 var cpuTemps = [String: Int]()
 repeat {
   let dirURL = baseURL.appendingPathComponent("thermal_zone\(cpuTemps.count)")
+  print(dirURL)
 let type : String
   let tempStr  : String
   do {
@@ -126,34 +129,46 @@ let type : String
   }
   temperatures.append(Temperature(value: temp / 1000, key: type.trimmingCharacters(in: .whitespacesAndNewlines)))
 } while true
+
+dieTemp = temperatures.first
+
+if dieTemp != nil {
+  temperatures.remove(at: 0)
+}
 // /sys/class/thermal/thermal_zone*/temp (millidegrees C)
 #endif
 
+print(dieTemp)
 
 let mainCpu : CPUData
 let cores : [CPUData]
 let cpuValue : Double?
 let sysCPU  = SysInfo.CPU
-guard let cpuS = sysCPU["cpu"], let die = dieTemp else {
+guard let cpuS = sysCPU["cpu"] else {
   fatalError()
 }
   let cpuSum = cpuS.map{$0.value}.reduce(0, +)
   let cpuIdle = cpuS["idle"] ?? 0
-  mainCpu = CPUData(temperature: die, idle: cpuIdle, sum: cpuSum)
+  mainCpu = CPUData(temperature: dieTemp, idle: cpuIdle, sum: cpuSum)
 
-cores = temperatures.enumerated().compactMap { (index, temp) -> CPUData? in
-  guard let core = sysCPU["cpu\(index)"] else {
+print(mainCpu)
+
+cores = zip((0..<sysCPU.count-1).map{
+  sysCPU["cpu\($0)"]
+}, temperatures).compactMap { (core, temperature) in
+  guard let core = core else {
     return nil
   }
   let cpuSum = core.map{$0.value}.reduce(0, +)
   let cpuIdle = core["idle"] ?? 0
-  return CPUData(temperature: temp, idle: cpuIdle, sum: cpuSum)
+  return CPUData(temperature: temperature, idle: cpuIdle, sum: cpuSum)
 }
 
 let cpu = CPU(cores: cores, cpu: mainCpu)
+print(cpu)
 var volumedict = [String : Volume]()
 //print(SysInfo.Disk)
-let volumeURLs = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey], options: [])!
+let volumeURLs = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey], options: []) ?? []
 
 
 for volume in volumeURLs {
