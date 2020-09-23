@@ -19,27 +19,46 @@ import NetUtils
  IPv6 address for wlan0: 2600:1702:4050:7d30:ba27:ebff:fea1:494b
  */
 
-enum OS {
-  case macOS
-  case linux
+public func parseTempKey(_ key : String) -> Int? {
+  guard let numChar = key.first(where: { $0.isNumber }) else {
+    return nil
+  }
+  
+  guard let num = Int(String(numChar)) else {
+    return nil
+  }
+  
+  let parts = key.split(separator: numChar)
+  
+  guard parts.count == 2 else {
+    return nil
+  }
+  
+  guard parts.first == "TC", parts.last == "C" else {
+    return nil
+  }
+  
+  return num
 }
 
-struct TemperatureCollection {
-  let os : OS
-  let temperatures : [String : Double]
+struct Temperature {
+  let value : Double
+  let label : String
 }
-let temperatures : [String : Double]
+var temperatures = [Temperature]()
 #if canImport(IOKit)
 let smc = SMCService()
-let keys = smc.getAllKeys()
-temperatures = Dictionary.init(uniqueKeysWithValues: keys.map{
-  ($0, smc.getValue($0))
-}).compactMapValues{ $0 }
-//for key in keys {
-//  if let value = smc.getValue(key) {
-//    print(key, value)
-//  }
-//}
+let indicies = smc.getAllKeys().compactMap(parseTempKey(_:))
+guard indicies.count - 1 == indicies.max() else {
+  fatalError()
+}
+let max = indicies.max() ?? 0
+for index in 0...max {
+  let key = "TC\(index)C"
+  if let value = smc.getValue(key) {
+    temperatures.append(Temperature(value: value, label: key))
+  }
+}
 // https://superuser.com/questions/553197/interpreting-sensor-names
 #else
 
@@ -60,12 +79,22 @@ let type : String
   guard let temp = Int(tempStr.trimmingCharacters(in: .whitespacesAndNewlines)) else {
     break
   }
-  cpuTemps[type.trimmingCharacters(in: .whitespacesAndNewlines)] = temp
+  temperatures.append(Temperature(value: Double(temp) / 1000.0, label: type.trimmingCharacters(in: .whitespacesAndNewlines)))
 } while true
-temperatures = cpuTemps.mapValues{ Double($0) / 1000.0}
 // /sys/class/thermal/thermal_zone*/temp (millidegrees C)
 #endif
 
+for temp in temperatures {
+  print (temp.label, temp.value)
+}
+struct CPU {
+  let idle : Int
+  let sum : Int
+}
+struct CPUStats {
+  let values : [CPU]
+  let total : CPU
+}
 let cpuValue : Double?
 if let cpu = SysInfo.CPU["cpu"] {
   let cpuSum = cpu.map{$0.value}.reduce(0, +)
@@ -79,18 +108,39 @@ if let cpuPercent = cpuValue.map({ $0 * 100.0}) {
   print("CPU Usage:", cpuPercent)
 }
 
+struct Volume {
+  let name : String
+  let available: Int
+  let total: Int
+}
+var volumedict = [String : Volume]()
 //print(SysInfo.Disk)
-let url = URL(fileURLWithPath: "/Volumes")
-let volumes = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey], options: [])!
+let volumeURLs = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey], options: [])!
 
-for volume in volumes {
+
+for volume in volumeURLs {
   guard let resourceValues = try? volume.resourceValues(forKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey]) else {
     continue
   }
-  let usage = Double(resourceValues.volumeAvailableCapacity ?? 0 )/Double(resourceValues.volumeTotalCapacity ?? 0)
   
-  let name =  resourceValues.volumeName ?? volume.path
-  print("Usage of \(name):", usage * 100.0)
+  let name = resourceValues.volumeName ?? volume.path
+  
+  guard let total = resourceValues.volumeTotalCapacity,
+        let available = resourceValues.volumeAvailableCapacity else {
+    continue
+  }
+  
+  guard !volumedict.keys.contains(name) else {
+    continue
+  }
+  
+  volumedict[name] = Volume(name: name, available: available, total: total)
+  
+}
+
+struct Memory {
+  let free : Int
+  let total : Int
 }
 let memory = SysInfo.Memory
 let total : Int
