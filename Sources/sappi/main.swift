@@ -5,6 +5,29 @@ import NetUtils
 
 print("test")
 
+
+struct Network {
+  let address : String
+  let family : NetUtils.Interface.Family
+  let name : String
+  
+  init?(interface: Interface) {
+    
+    guard interface.isUp, interface.isRunning, !interface.isLoopback else {
+      return nil
+    }
+    guard let address = interface.address ?? interface.broadcastAddress else {
+      return nil
+    }
+    
+    let family = interface.family
+    let name = interface.name
+    self.name = name
+    self.family = family
+    self.address = address
+  }
+}
+
 struct Memory {
   let free : Int
   let total : Int
@@ -16,6 +39,7 @@ struct Volume {
 }
 
 struct Temperature {
+  #warning("use better unit")
   let value : Int
   let key : String
 }
@@ -34,6 +58,7 @@ struct SystemInfo {
   let cpu : CPU
   let volumes: [Volume]
   let memory : Memory
+  let networks : [Network]
   let processes : Int
 }
 /**
@@ -224,6 +249,7 @@ for dir : URL in contents {
 processesCount = count
 #endif
 
-let info = SystemInfo(cpu: cpu, volumes: Array(volumedict.values), memory: Memory(free: free, total: total), processes: processesCount)
+let info = SystemInfo(cpu: cpu, volumes: Array(volumedict.values), memory: Memory(free: free, total: total), networks: Interface.allInterfaces().compactMap(Network.init(interface:)), processes: processesCount)
 
 print(info)
+
