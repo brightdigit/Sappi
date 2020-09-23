@@ -110,9 +110,8 @@ for index in 0...max {
 #else
 
 let baseURL = URL(fileURLWithPath: "/sys/class/thermal/")
-var cpuTemps = [String: Int]()
 repeat {
-  let dirURL = baseURL.appendingPathComponent("thermal_zone\(cpuTemps.count)")
+  let dirURL = baseURL.appendingPathComponent("thermal_zone\(temperatures.count)")
   print(dirURL)
 let type : String
   let tempStr  : String
