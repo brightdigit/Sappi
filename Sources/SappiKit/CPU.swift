@@ -1,5 +1,5 @@
 
-struct CPU {
+public struct CPU {
   let cores : [CPUData]
   let cpu : CPUData
 }

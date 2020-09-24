@@ -1,5 +1,5 @@
 
-struct Network {
+public struct Network {
   let address : String
   let family : Interface.Family
   let name : String
