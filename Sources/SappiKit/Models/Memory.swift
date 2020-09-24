@@ -1,4 +1,4 @@
 public struct Memory {
-  let free: Int
-  let total: Int
+  public let free: Int
+  public let total: Int
 }

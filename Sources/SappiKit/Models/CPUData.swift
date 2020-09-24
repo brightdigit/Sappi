@@ -1,5 +1,5 @@
 public struct CPUData {
-  let temperature: Temperature?
-  let idle: Int
-  let sum: Int
+  public let temperature: Temperature?
+  public let idle: Int
+  public let sum: Int
 }

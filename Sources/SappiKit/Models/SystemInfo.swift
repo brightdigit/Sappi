@@ -1,10 +1,10 @@
 import Foundation
 public struct SystemInfo {
-  let cpu: CPU
-  let volumes: [Volume]
-  let memory: Memory
-  let networks: [Network]
-  let processes: Int
+  public let cpu: CPU
+  public let volumes: [Volume]
+  public let memory: Memory
+  public let networks: [Network]
+  public let processes: Int
 
   public static func fetch() -> SystemInfo {
     var temperatures = [Temperature]()
@@ -97,6 +97,10 @@ public struct SystemInfo {
       }
 
       guard !volumedict.keys.contains(name) else {
+        continue
+      }
+
+      guard total > 0 else {
         continue
       }
 

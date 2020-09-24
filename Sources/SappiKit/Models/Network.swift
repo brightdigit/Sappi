@@ -1,7 +1,7 @@
 public struct Network {
-  let address: String
-  let family: Interface.Family
-  let name: String
+  public let address: String
+  public let family: InterfaceFamily
+  public let name: String
 
   init?(interface: Interface) {
     guard interface.isUp, interface.isRunning, !interface.isLoopback else {

@@ -32,25 +32,6 @@ import Foundation
 class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifiable {
   public var id = UUID()
   /// The network interface family (IPv4 or IPv6).
-  public enum Family: Int {
-    /// IPv4.
-    case ipv4
-
-    /// IPv6.
-    case ipv6
-
-    /// Used in case of errors.
-    case other
-
-    /// String representation of the address family.
-    public func toString() -> String {
-      switch self {
-      case .ipv4: return "IPv4"
-      case .ipv6: return "IPv6"
-      default: return "other"
-      }
-    }
-  }
 
   /**
    * Returns all network interfaces in your system. If you have an interface name (e.g. `en0`) that has
@@ -81,14 +62,14 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
    * Returns a new Interface instance that does not represent a real network interface, but can be used for (unit) testing.
    * - Returns: An instance of Interface that does *not* represent a real network interface.
    */
-  public static func createTestDummy(_ name: String, family: Family, address: String, multicastSupported: Bool, broadcastAddress: String?) -> Interface {
+  public static func createTestDummy(_ name: String, family: InterfaceFamily, address: String, multicastSupported: Bool, broadcastAddress: String?) -> Interface {
     return Interface(name: name, family: family, address: address, netmask: nil, running: true, up: true, loopback: false, multicastSupported: multicastSupported, broadcastAddress: broadcastAddress)
   }
 
   /**
    * Initialize a new Interface with the given properties.
    */
-  public init(name: String, family: Family, address: String?, netmask: String?, running: Bool, up: Bool, loopback: Bool, multicastSupported: Bool, broadcastAddress: String?) {
+  public init(name: String, family: InterfaceFamily, address: String?, netmask: String?, running: Bool, up: Bool, loopback: Bool, multicastSupported: Bool, broadcastAddress: String?) {
     self.name = name
     self.family = family
     self.address = address
@@ -114,8 +95,8 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
               broadcastAddress: (broadcastValid && destinationAddress(data) != nil) ? Interface.extractAddress(destinationAddress(data)) : nil)
   }
 
-  fileprivate static func extractFamily(_ data: ifaddrs) -> Family {
-    var family: Family = .other
+  fileprivate static func extractFamily(_ data: ifaddrs) -> InterfaceFamily {
+    var family: InterfaceFamily = .other
     let addr = data.ifa_addr.pointee
     if addr.sa_family == InetFamily(AF_INET) {
       family = .ipv4
@@ -208,7 +189,7 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
   public let name: String
 
   /// Field `ifaddrs->ifa_addr->sa_family`.
-  public let family: Family
+  public let family: InterfaceFamily
 
   /// Extracted from `ifaddrs->ifa_addr`, supports both IPv4 and IPv6.
   public let address: String?

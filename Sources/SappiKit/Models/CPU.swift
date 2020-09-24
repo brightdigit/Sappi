@@ -1,4 +1,4 @@
 public struct CPU {
-  let cores: [CPUData]
-  let cpu: CPUData
+  public let cores: [CPUData]
+  public let cpu: CPUData
 }
