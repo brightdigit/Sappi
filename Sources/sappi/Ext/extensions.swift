@@ -9,7 +9,9 @@
 //  Copyright © 2020 Serhiy Mytrovtsiy. All rights reserved.
 //
 
+#if canImport(IOKit)
 import Foundation
+import IOKit
 //public let kCFAllocatorDefault: CFAllocator!
 
 public func getIOParent(_ obj: io_registry_entry_t) -> io_registry_entry_t? {
@@ -62,13 +64,5 @@ public func getIOProperties(_ entry: io_registry_entry_t) -> NSDictionary? {
 }
 
 
-public func LocalizedString(_ key: String, _ params: String..., comment: String = "") -> String {
-    var string = NSLocalizedString(key, comment: comment)
-    if !params.isEmpty {
-        for (index, param) in params.enumerated() {
-            string = string.replacingOccurrences(of: "%\(index)", with: param)
-        }
-    }
-    return string
-}
 
+#endif

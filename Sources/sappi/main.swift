@@ -1,66 +1,6 @@
 import Foundation
 import ArgumentParser
-import PerfectSysInfo
-import NetUtils
 
-print("test")
-
-
-struct Network {
-  let address : String
-  let family : NetUtils.Interface.Family
-  let name : String
-  
-  init?(interface: Interface) {
-    
-    guard interface.isUp, interface.isRunning, !interface.isLoopback else {
-      return nil
-    }
-    guard let address = interface.address ?? interface.broadcastAddress else {
-      return nil
-    }
-    
-    let family = interface.family
-    let name = interface.name
-    self.name = name
-    self.family = family
-    self.address = address
-  }
-}
-
-struct Memory {
-  let free : Int
-  let total : Int
-}
-struct Volume {
-  let name : String
-  let available: Int
-  let total: Int
-}
-
-struct Temperature {
-  #warning("use better unit")
-  let value : Int
-  let key : String
-}
-
-struct CPUData {
-  let temperature : Temperature?
-  let idle : Int
-  let sum : Int
-}
-struct CPU {
-  let cores : [CPUData]
-  let cpu : CPUData
-}
-
-struct SystemInfo {
-  let cpu : CPU
-  let volumes: [Volume]
-  let memory : Memory
-  let networks : [Network]
-  let processes : Int
-}
 /**
  System load:            0.0
  Usage of /:             5.5% of 116.92GB
@@ -77,41 +17,6 @@ struct SystemInfo {
  IPv6 address for wlan0: 2600:1702:4050:7d30:ba27:ebff:fea1:494b
  */
 
-public func parseTempKey(_ key : String) -> Int? {
-  guard let numChar = key.first(where: { $0.isNumber }) else {
-    return nil
-  }
-  
-  guard let num = Int(String(numChar)) else {
-    return nil
-  }
-  
-  let parts = key.split(separator: numChar)
-  guard parts.count == 2 else {
-    return nil
-  }
-  
-  //print(parts)
-  
-  guard parts.first == "TC", parts.last?.uppercased() == "C" else {
-    return nil
-  }
-  
-  return num
-}
-
-
-extension Array {
-  func firstMap<Value> (_ closure: (Element) -> Value?) -> Value? {
-    for element in self {
-      if let value = closure(element) {
-        return value
-      }
-    }
-    return nil
-  }
-}
-print("test)")
 var temperatures = [Temperature]()
 let dieTemp : Temperature?
 #if canImport(IOKit)
@@ -137,7 +42,6 @@ for index in 0...max {
 let baseURL = URL(fileURLWithPath: "/sys/class/thermal/")
 repeat {
   let dirURL = baseURL.appendingPathComponent("thermal_zone\(temperatures.count)")
-  print(dirURL)
 let type : String
   let tempStr  : String
   do {
@@ -162,7 +66,6 @@ if dieTemp != nil {
 // /sys/class/thermal/thermal_zone*/temp (millidegrees C)
 #endif
 
-print(dieTemp)
 
 let mainCpu : CPUData
 let cores : [CPUData]
@@ -174,8 +77,6 @@ guard let cpuS = sysCPU["cpu"] else {
   let cpuSum = cpuS.map{$0.value}.reduce(0, +)
   let cpuIdle = cpuS["idle"] ?? 0
   mainCpu = CPUData(temperature: dieTemp, idle: cpuIdle, sum: cpuSum)
-
-print(mainCpu)
 
 cores = zip((0..<sysCPU.count-1).map{
   sysCPU["cpu\($0)"]
@@ -189,7 +90,6 @@ cores = zip((0..<sysCPU.count-1).map{
 }
 
 let cpu = CPU(cores: cores, cpu: mainCpu)
-print(cpu)
 var volumedict = [String : Volume]()
 //print(SysInfo.Disk)
 let volumeURLs = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey], options: []) ?? []
@@ -217,19 +117,18 @@ for volume in volumeURLs {
 
 let memory = SysInfo.Memory
 let total : Int
-let free : Int
+let freeMem : Int
 if let memtotal = memory["MemTotal"], let memfree = memory["MemAvailable"] {
   total = memtotal
-  free = memfree
+  freeMem = memfree
 } else {
   
   let totalKeys = ["free", "active", "inactive", "wired"]
 
   total = memory.filter{totalKeys.contains($0.key)}.map{ $0.value }.reduce(0, +)
-  free = memory["free"] ?? 0
+  freeMem = memory["free"] ?? 0
 }
 
-print("Memory usage:", 100 - (free*100/total) )
 
 let processesCount : Int
 #if canImport(Darwin)
@@ -249,7 +148,7 @@ for dir : URL in contents {
 processesCount = count
 #endif
 
-let info = SystemInfo(cpu: cpu, volumes: Array(volumedict.values), memory: Memory(free: free, total: total), networks: Interface.allInterfaces().compactMap(Network.init(interface:)), processes: processesCount)
+let info = SystemInfo(cpu: cpu, volumes: Array(volumedict.values), memory: Memory(free: freeMem, total: total), networks: Interface.allInterfaces().compactMap(Network.init(interface:)), processes: processesCount)
 
 print(info)
 

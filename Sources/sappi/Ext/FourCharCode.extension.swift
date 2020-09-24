@@ -1,8 +1,12 @@
 import Foundation
 
-public typealias FourCharCode = UInt32
+#if canImport(Darwin)
+import Darwin
+#else
+typealias FourCharCode = UInt32
+#endif
 
-public extension FourCharCode {
+extension FourCharCode {
     init(fromString str: String) {
         precondition(str.count == 4)
 

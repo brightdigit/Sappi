@@ -1,18 +1,4 @@
-//
-//  updater.swift
-//  StatsKit
-//
-//  Created by Serhiy Mytrovtsiy on 14/04/2020.
-//  Using Swift 5.0.
-//  Running on macOS 10.15.
-//
-//  Copyright © 2020 Serhiy Mytrovtsiy. All rights reserved.
-//
 
-
-extension String : Error {
-  
-}
 
 public struct version_s {
     public let current: String
@@ -26,10 +12,4 @@ public struct version_s {
         self.newest = newest
         self.url = url
     }
-}
-
-public struct Version {
-    var major: Int = 0
-    var minor: Int = 0
-    var patch: Int = 0
 }
