@@ -21,7 +21,7 @@ jobs:
     - name: Setup Xcode
       run: sudo xcode-select -s ${{ matrix.xcode }}/Contents/Developer
     - name: Installing Prerequisites
-      run: brew install mint && mint install nicklockwood/swiftformat realm/swiftlint eneko/sourcedocs
+      run: brew install mint && mint install
     - name: Build
       run: swift build
     - name: Lint

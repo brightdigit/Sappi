@@ -2,7 +2,7 @@
 
 if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
   brew install mint
-  mint install nicklockwood/swiftformat realm/swiftlint eneko/sourcedocs
+  mint bootstrap
 elif [[ $TRAVIS_OS_NAME = 'linux' ]]; then
   RELEASE_DOT=$(lsb_release -sr)
   RELEASE_NUM=${RELEASE_DOT//[-._]/}
