@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
-  brew update >/dev/null
-  brew bundle
+  brew install mint
+  mint install nicklockwood/swiftformat realm/swiftlint eneko/sourcedocs
 elif [[ $TRAVIS_OS_NAME = 'linux' ]]; then
   RELEASE_DOT=$(lsb_release -sr)
   RELEASE_NUM=${RELEASE_DOT//[-._]/}

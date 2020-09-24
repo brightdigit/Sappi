@@ -20,10 +20,12 @@ jobs:
       run: echo "::set-env name=XCODE_NAME::$(basename -- ${{ matrix.xcode }} | sed 's/\.[^.]*$//' | cut -d'_' -f2)"
     - name: Setup Xcode
       run: sudo xcode-select -s ${{ matrix.xcode }}/Contents/Developer
+    - name: Installing Prerequisites
+      run: brew install mint && mint install nicklockwood/swiftformat realm/swiftlint eneko/sourcedocs
     - name: Build
       run: swift build
     - name: Lint
-      run: swift run swiftformat --lint . && swift run swiftlint
+      run: swiftformat --lint . && swiftlint
     - name: Run tests
       run: swift test -v --enable-code-coverage
     - name: Prepare Code Coverage
@@ -34,7 +36,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     - name: Build Documentation
       if: ${{ matrix.xcode == '/Applications/Xcode_12.app' }}
-      run: swift run sourcedocs generate build -c --spm-module OrchardNestKit
+      run: sourcedocs generate build -c --spm-module OrchardNestKit
     - name: Commit files
       if: ${{ matrix.xcode == '/Applications/Xcode_12.app' }}
       run: |
