@@ -1,10 +1,12 @@
+# Created by https://www.gitignore.io/api/swiftpm,swiftpackagemanager,xcode,swift,macos
+# Edit at https://www.gitignore.io/?templates=swiftpm,swiftpackagemanager,xcode,swift,macos
 
-# Created by https://www.toptal.com/developers/gitignore/api/xcode,swift,macos,swiftpm
-# Edit at https://www.toptal.com/developers/gitignore?templates=xcode,swift,macos,swiftpm
 
 ### macOS ###
 # General
 .DS_Store
+*.DS_Store
+
 .AppleDouble
 .LSOverride
 
@@ -42,9 +44,14 @@ xcuserdata/
 *.xcscmblueprint
 *.xccheckout
 
-## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
+## Build generated
 build/
 DerivedData/
+
+## Various settings
+# Xcode
+#
+build/
 *.moved-aside
 *.pbxuser
 !default.pbxuser
@@ -54,6 +61,14 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
+xcuserdata/
+
+## Other
+*.moved-aside
+*.xccheckout
+*.xcuserstate
+
+*.xcscmblueprint
 
 ## Obj-C/Swift specific
 *.hmap
@@ -78,8 +93,16 @@ Package.resolved
 .swiftpm
 
 .build/
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
 
 # CocoaPods
+
 # We recommend against adding the Pods directory to your .gitignore. However
 # you should judge for yourself, the pros and cons are mentioned at:
 # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
@@ -98,6 +121,7 @@ Dependencies/
 .accio/
 
 # fastlane
+
 # It is recommended to not store the screenshots in the git repo.
 # Instead, use fastlane to re-generate the screenshots whenever they are needed.
 # For more information about the recommended setup visit:
@@ -111,30 +135,50 @@ fastlane/test_output
 # Code Injection
 # After new code Injection tools there's a generated folder /iOSInjectionProject
 # https://github.com/johnno1962/injectionforxcode
+VCS.swift
 
 iOSInjectionProject/
+Products
 
-### SwiftPM ###
+
+### SwiftPackageManager ###
 Packages
 xcuserdata
 *.xcodeproj
+.tmp
+
+
+### SwiftPM ###
 
 
 ### Xcode ###
 # Xcode
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
+## User settings
 
+## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
 
+## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
 
 ## Gcc Patch
 /*.gcno
+.swiftpm
 
 ### Xcode Patch ###
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
+/*.gcno
+
+### Xcode Patch ###
 **/xcshareddata/WorkspaceSettings.xcsettings
 
-# End of https://www.toptal.com/developers/gitignore/api/xcode,swift,macos,swiftpm
+# End of https://www.gitignore.io/api/swiftpm,swiftpackagemanager,xcode,swift,macos
+*.xcworkspace
+Pods
+*.lcov
+Brewfile.lock.json
+Package.resolved
+Documentation/Reference/README.md
