@@ -123,7 +123,7 @@ public struct SystemInfo {
       let ret = sysctl(&mib, 4, nil, &size, nil, 0)
       processesCount = size / MemoryLayout<kinfo_proc>.size
     #else
-      let contents = try! FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: "/proc"), includingPropertiesForKeys: nil, options: [])
+      let contents = try? FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: "/proc"), includingPropertiesForKeys: nil, options: []) ?? []
       var count = 0
       for dir: URL in contents {
         if FileManager.default.fileExists(atPath: dir.appendingPathComponent("task").path) {

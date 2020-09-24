@@ -229,12 +229,12 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
 
   /// Returns a string containing a few properties of the Interface.
   open var debugDescription: String {
-    var s = "Interface name:\(name) family:\(family)"
+    var string = "Interface name:\(name) family:\(family)"
     if let ip = address {
-      s += " ip:\(ip)"
+      string += " ip:\(ip)"
     }
-    s += isUp ? " (up)" : " (down)"
-    s += isRunning ? " (running)" : "(not running)"
-    return s
+    string += isUp ? " (up)" : " (down)"
+    string += isRunning ? " (running)" : "(not running)"
+    return string
   }
 }

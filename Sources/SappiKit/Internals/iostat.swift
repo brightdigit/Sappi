@@ -8,18 +8,18 @@
     public var driver = io_registry_entry_t()
     public var name = ""
     public var blocksize = UInt64(0)
-    public var total_bytes = UInt64(0)
-    public var total_transfers = UInt64(0)
-    public var total_time = UInt64(0)
+    public var totalBytes = UInt64(0)
+    public var totalTransfers = UInt64(0)
+    public var totalTime = UInt64(0)
 
     static func record_device(_ drive: io_registry_entry_t) throws -> DriverStats {
       var parent = io_registry_entry_t()
       guard KERN_SUCCESS == IORegistryEntryGetParentEntry(drive, kIOServicePlane, &parent) else {
-        throw Panic.DeviceHasNoParent
+        throw Panic.deviceHasNoParent
       } // end guard
       guard IOObjectConformsTo(parent, "IOBlockStorageDriver") != 0 else {
         IOObjectRelease(parent)
-        throw Panic.DeviceDoesNotConformToStorageDriver
+        throw Panic.deviceDoesNotConformToStorageDriver
       } // end if
       var drv = DriverStats()
       drv.driver = parent
@@ -29,7 +29,7 @@
         let prop = properties?.takeUnretainedValue() as? [String: Any],
         let name = prop[kIOBSDNameKey] as? String
       else {
-        throw Panic.DeivceHasNoProperties
+        throw Panic.deivceHasNoProperties
       }
       properties?.release()
       drv.name = name
@@ -43,7 +43,7 @@
         let ioMedia = IOServiceMatching("IOMedia"),
         let iomatch = ioMedia as? [String: Any]
       else {
-        throw Panic.MatchIOMediaFailed
+        throw Panic.matchIOMediaFailed
       }
 
       var match = iomatch
@@ -54,7 +54,7 @@
       guard
         KERN_SUCCESS == IOServiceGetMatchingServices(kIOMasterPortDefault, match as CFDictionary, &drivelist)
       else {
-        throw Panic.MatchIOMediaFailed
+        throw Panic.matchIOMediaFailed
       } // end guard
       var drive = io_object_t(0)
       for _ in 0 ... maxshowdevs {
