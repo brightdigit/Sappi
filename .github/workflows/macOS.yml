@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: swift build
     - name: Lint
-      run: swiftformat --lint . && swiftlint
+      run: mint run swiftformat --lint . && mint run swiftlint
     - name: Run tests
       run: swift test -v --enable-code-coverage
     - name: Prepare Code Coverage
