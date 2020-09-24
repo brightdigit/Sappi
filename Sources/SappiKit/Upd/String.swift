@@ -1,4 +1,0 @@
-
-extension String : Error {
-  
-}

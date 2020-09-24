@@ -1,5 +1,5 @@
-import Foundation
 import ArgumentParser
+import Foundation
 import SappiKit
 /**
  System load:            0.0
@@ -18,4 +18,3 @@ import SappiKit
  */
 
 print(SystemInfo.fetch())
-
