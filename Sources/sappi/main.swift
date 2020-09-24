@@ -1,3 +1,9 @@
 import ArgumentParser
 
-print("Hello, world!")
+
+struct SappiCommand : ParsableCommand {
+  func run() throws {
+    print("Hello, world!")    
+  }
+}
+
