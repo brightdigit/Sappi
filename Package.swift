@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "sappi",
+  name: "Sappi",
   platforms: [.macOS(.v10_15)],
   products: [
     .executable(name: "sappi", targets: ["sappi"]),
@@ -30,7 +30,7 @@ let package = Package(
       ]
     ),
     .testTarget(
-      name: "sappiTests",
+      name: "SappiTests",
       dependencies: ["sappi"]
     )
   ]
