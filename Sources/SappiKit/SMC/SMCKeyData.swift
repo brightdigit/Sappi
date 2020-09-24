@@ -12,7 +12,7 @@ struct SMCKeyData {
                      UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
                      UInt8, UInt8, UInt8, UInt8)
 
-  struct vers_t {
+  struct Version {
     var major: CUnsignedChar = 0
     var minor: CUnsignedChar = 0
     var build: CUnsignedChar = 0
@@ -20,7 +20,7 @@ struct SMCKeyData {
     var release: CUnsignedShort = 0
   }
 
-  struct LimitData_t {
+  struct LimitData {
     var version: UInt16 = 0
     var length: UInt16 = 0
     var cpuPLimit: UInt32 = 0
@@ -28,16 +28,16 @@ struct SMCKeyData {
     var memPLimit: UInt32 = 0
   }
 
-  struct keyInfo_t {
+  struct KeyInfo {
     var dataSize: IOByteCount = 0
     var dataType: UInt32 = 0
     var dataAttributes: UInt8 = 0
   }
 
   var key: UInt32 = 0
-  var vers = vers_t()
-  var pLimitData = LimitData_t()
-  var keyInfo = keyInfo_t()
+  var vers = Version()
+  var pLimitData = LimitData()
+  var keyInfo = KeyInfo()
   var padding: UInt16 = 0
   var result: UInt8 = 0
   var status: UInt8 = 0

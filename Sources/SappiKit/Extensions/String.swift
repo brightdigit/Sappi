@@ -19,10 +19,10 @@ extension String {
   internal var trimmed: String {
     var buf = [UInt8]()
     var trimming = true
-    for c in utf8 {
-      if trimming, c < 33 { continue }
+    for character in utf8 {
+      if trimming, character < 33 { continue }
       trimming = false
-      buf.append(c)
+      buf.append(character)
     } // end ltrim
     while let last = buf.last, last < 33 {
       buf.removeLast()
@@ -44,19 +44,19 @@ extension String {
   /// treat the string as a file name and get the content by this name,
   /// will return nil if failed
   internal var asFile: String? {
-    guard let f = fopen(self, "r") else { return nil }
+    guard let file = fopen(self, "r") else { return nil }
     var content = [Int8]()
     let buf = UnsafeMutablePointer<Int8>.allocate(capacity: String.szSTR)
     memset(buf, 0, String.szSTR)
     var count = 0
     repeat {
-      count = fread(buf, 1, String.szSTR, f)
+      count = fread(buf, 1, String.szSTR, file)
       if count > 0 {
         let buffer = UnsafeBufferPointer(start: buf, count: count)
         content += Array(buffer)
       } // end if
     } while count > 0
-    fclose(f)
+    fclose(file)
     buf.deallocate()
     let ret = String(cString: content)
     return ret
@@ -90,9 +90,9 @@ extension String {
     let size = min(values.count, definition.count)
     guard size > 0 else { return [:] }
     var content: [String: String] = [:]
-    for i in 0 ... size - 1 {
-      let key = definition[i].keyName
-      let value = values[i]
+    for index in 0 ... size - 1 {
+      let key = definition[index].keyName
+      let value = values[index]
       content[key] = value
     } // next i
     return content

@@ -53,8 +53,8 @@ class SysInfo {
                     "reading_ms", "writes_completed", "writes_merged",
                     "sectors_written", "writing_ms", "io_in_progress",
                     "io_ms", "weighte_io_ms"]
-        for i in 3 ... 13 {
-          sta[keys[i]] = UInt64(tokens[i]) ?? 0
+        for index in 3 ... 13 {
+          sta[keys[index]] = UInt64(tokens[index]) ?? 0
         } // next i
         stats[title] = sta
       } // next
@@ -193,8 +193,8 @@ class SysInfo {
       for item in array {
         guard let title = item["name"] else { continue }
         var stat: [String: Int] = [:]
-        for (k, v) in (item.filter { $0.key != "name" }) {
-          stat[k] = Int(v) ?? 0
+        for (key, value) in (item.filter { $0.key != "name" }) {
+          stat[key] = Int(value) ?? 0
         } // next
         lines[title] = stat
       } // next
@@ -218,14 +218,14 @@ class SysInfo {
       }
       var lines: [String: [String: Int]] = [:]
       let count = Int(processorCount)
-      for i in 0 ... count - 1 {
+      for index in 0 ... count - 1 {
         // CPU_STATE_MAX = 4, CPU_STATE_IDLE = 2, CPU_STATE_NICE = 3,
         // CPU_STATE_USER = 0, CPU_STATE_SYSTEM = 1
-        let user = Int(cpuLoad[i].cpu_ticks.0)
-        let system = Int(cpuLoad[i].cpu_ticks.1)
-        let idle = Int(cpuLoad[i].cpu_ticks.2)
-        let nice = Int(cpuLoad[i].cpu_ticks.3)
-        lines["cpu\(i)"] = ["user": user, "system": system, "idle": idle, "nice": nice]
+        let user = Int(cpuLoad[index].cpu_ticks.0)
+        let system = Int(cpuLoad[index].cpu_ticks.1)
+        let idle = Int(cpuLoad[index].cpu_ticks.2)
+        let nice = Int(cpuLoad[index].cpu_ticks.3)
+        lines["cpu\(index)"] = ["user": user, "system": system, "idle": idle, "nice": nice]
         totalUser += user
         totalSystem += system
         totalIdle += idle
@@ -267,9 +267,9 @@ class SysInfo {
         let array = Array(UnsafeBufferPointer(start: pStat, count: size))
         let tags = ["free", "active", "inactive", "wired", "zero_filled", "reactivations", "pageins", "pageouts", "faults", "cow", "lookups", "hits"]
         let cnt = min(tags.count, array.count)
-        for i in 0 ... cnt - 1 {
-          let key = tags[i]
-          let value = array[i]
+        for index in 0 ... cnt - 1 {
+          let key = tags[index]
+          let value = array[index]
           stat[key] = Int(value) / 256
         } // next i
       } // end if

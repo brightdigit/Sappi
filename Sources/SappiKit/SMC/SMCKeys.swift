@@ -1,9 +1,9 @@
 enum SMCKeys: UInt8 {
-  case KERNEL_INDEX = 2
-  case READ_BYTES = 5
-  case WRITE_BYTES = 6
-  case READ_INDEX = 8
-  case READ_KEYINFO = 9
-  case READ_PLIMIT = 11
-  case READ_VERS = 12
+  case kernelIndex = 2
+  case readBytes = 5
+  case writeBytes = 6
+  case readIndex = 8
+  case readKeyInfo = 9
+  case readPList = 11
+  case readVersion = 12
 }

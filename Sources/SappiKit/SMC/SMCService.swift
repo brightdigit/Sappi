@@ -111,9 +111,9 @@
       var output = SMCKeyData()
 
       input.key = FourCharCode(fromString: value.pointee.key)
-      input.data8 = SMCKeys.READ_KEYINFO.rawValue
+      input.data8 = SMCKeys.readKeyInfo.rawValue
 
-      result = call(SMCKeys.KERNEL_INDEX.rawValue, input: &input, output: &output)
+      result = call(SMCKeys.kernelIndex.rawValue, input: &input, output: &output)
       if result != kIOReturnSuccess {
         print("Error call(READ_KEYINFO): " + (String(cString: mach_error_string(result), encoding: String.Encoding.ascii) ?? "unknown error"))
         return result
@@ -122,9 +122,9 @@
       value.pointee.dataSize = output.keyInfo.dataSize
       value.pointee.dataType = output.keyInfo.dataType.toString()
       input.keyInfo.dataSize = output.keyInfo.dataSize
-      input.data8 = SMCKeys.READ_BYTES.rawValue
+      input.data8 = SMCKeys.readBytes.rawValue
 
-      result = call(SMCKeys.KERNEL_INDEX.rawValue, input: &input, output: &output)
+      result = call(SMCKeys.kernelIndex.rawValue, input: &input, output: &output)
       if result != kIOReturnSuccess {
         print("Error call(READ_BYTES): " + (String(cString: mach_error_string(result), encoding: String.Encoding.ascii) ?? "unknown error"))
         return result
@@ -162,14 +162,14 @@
       var input = SMCKeyData()
       var output = SMCKeyData()
 
-      for i in 0 ... Int(keysNum!) {
+      for integer in 0 ... Int(keysNum!) {
         input = SMCKeyData()
         output = SMCKeyData()
 
-        input.data8 = SMCKeys.READ_INDEX.rawValue
-        input.data32 = UInt32(i)
+        input.data8 = SMCKeys.readIndex.rawValue
+        input.data32 = UInt32(integer)
 
-        result = call(SMCKeys.KERNEL_INDEX.rawValue, input: &input, output: &output)
+        result = call(SMCKeys.kernelIndex.rawValue, input: &input, output: &output)
         if result != kIOReturnSuccess {
           continue
         }
