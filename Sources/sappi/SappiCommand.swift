@@ -8,6 +8,9 @@ struct SappiCommand: ParsableCommand {
   @Option
   var format: RatioFormat = .default
 
+  @Flag
+  var verbose: Bool = false
+
   func run() throws {
     let typeSet = Set(infoTypes).sorted()
     let systemInfo = SystemInfo()
@@ -15,11 +18,22 @@ struct SappiCommand: ParsableCommand {
       switch type {
       case .cpu:
         print("CPU Usage:", systemInfo.cpu.cpu.formattedAs(format))
+        if verbose {
+          for (index, core) in systemInfo.cpu.cores.enumerated() {
+            print("CPU \(index + 1) Usage:", core.formattedAs(format))
+          }
+          for (index, temp) in systemInfo.cpu.temperatures.enumerated() {
+            if index == 0 {
+              print("CPU Die Temperature:", "\(temp.value)°C")
+            } else {
+              print("Core \(index) Temperature:", "\(temp.value)°C")
+            }
+          }
+        }
       case .memory:
         print("Memory Usage:", systemInfo.memory.formattedAs(format))
       case .disks:
         for volume in systemInfo.volumes {
-          // print("Usage of \(volume.name):", "\(volume.percent) of \(Double(volume.total / 10_000_000) / 100)GB")
           print("Usage of \(volume.name):", volume.formattedAs(format))
         }
       case .processes:
