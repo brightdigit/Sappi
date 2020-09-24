@@ -1,12 +1,10 @@
 **ENUM**
 
-# `Interface.Family`
+# `InterfaceFamily`
 
 ```swift
-public enum Family: Int
+public enum InterfaceFamily: Int, CustomStringConvertible
 ```
-
-The network interface family (IPv4 or IPv6).
 
 ## Cases
 ### `ipv4`
@@ -33,11 +31,11 @@ case other
 
 Used in case of errors.
 
-## Methods
-### `toString()`
+## Properties
+### `description`
 
 ```swift
-public func toString() -> String
+public var description: String
 ```
 
 String representation of the address family.
