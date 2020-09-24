@@ -10,7 +10,7 @@ struct SappiCommand: ParsableCommand {
 
   func run() throws {
     let typeSet = Set(infoTypes).sorted()
-    let systemInfo = SystemInfo.fetch()
+    let systemInfo = SystemInfo()
     for type in typeSet {
       switch type {
       case .cpu:
