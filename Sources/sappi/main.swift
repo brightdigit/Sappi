@@ -17,4 +17,8 @@ import SappiKit
  IPv6 address for wlan0: 2600:1702:4050:7d30:ba27:ebff:fea1:494b
  */
 
-print(SystemInfo.fetch())
+struct SappiCommand : ParsableCommand {
+  func run() throws {
+    print(SystemInfo.fetch())   
+  }
+}
