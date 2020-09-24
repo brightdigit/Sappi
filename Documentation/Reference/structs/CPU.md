@@ -18,3 +18,9 @@ public let cores: [CPUData]
 ```swift
 public let cpu: CPUData
 ```
+
+### `temperatures`
+
+```swift
+public let temperatures: [Temperature]
+```

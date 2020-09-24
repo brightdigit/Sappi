@@ -7,12 +7,6 @@ public struct CPUData
 ```
 
 ## Properties
-### `temperature`
-
-```swift
-public let temperature: Temperature?
-```
-
 ### `idle`
 
 ```swift
