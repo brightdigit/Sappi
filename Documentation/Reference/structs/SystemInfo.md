@@ -38,8 +38,8 @@ public let processes: Int
 ```
 
 ## Methods
-### `fetch()`
+### `init()`
 
 ```swift
-public static func fetch() -> SystemInfo
+public init()
 ```
