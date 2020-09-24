@@ -18,9 +18,9 @@ swift build
 swift test  --enable-code-coverage --enable-test-discovery
 
 if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
-  xcrun llvm-cov export -format="lcov" .build/debug/${FRAMEWORK_NAME}PackageTests.xctest/Contents/MacOS/${FRAMEWORK_NAME}PackageTests -instr-profile .build/debug/codecov/default.profdata > info.lcov
+  xcrun llvm-cov export -format="lcov" .build/debug/sappiPackageTests.xctest/Contents/MacOS/${FRAMEWORK_NAME}PackageTests -instr-profile .build/debug/codecov/default.profdata > info.lcov
   bash <(curl https://codecov.io/bash) -F travis -F macOS -n $TRAVIS_JOB_NUMBER-$TRAVIS_OS_NAME
 else
-  llvm-cov export -format="lcov" .build/${ARCH_PREFIX}-unknown-linux-gnu/debug/${FRAMEWORK_NAME}PackageTests.xctest -instr-profile .build/debug/codecov/default.profdata > info.lcov
+  llvm-cov export -format="lcov" .build/${ARCH_PREFIX}-unknown-linux-gnu/debug/sappiPackageTests.xctest -instr-profile .build/debug/codecov/default.profdata > info.lcov
   bash <(curl https://codecov.io/bash) -F travis -F $RELEASE_NAME -F $ARCH -n $TRAVIS_JOB_NUMBER-$TRAVIS_OS_NAME
 fi
