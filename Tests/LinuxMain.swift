@@ -3,5 +3,6 @@ import XCTest
 import sappiTests
 
 var tests = [XCTestCaseEntry]()
-tests += sappiTests.allTests()
+tests += sappiTests.__allTests()
+
 XCTMain(tests)
