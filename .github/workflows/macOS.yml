@@ -44,4 +44,5 @@ jobs:
         git config --local user.name "GitHub Action"
         git status
         git add Documentation
-        git diff-index --quiet HEAD || git commit -m "[github action] Update Docs"
+        git diff-index --quiet HEAD || git commit -m "[github action] [ci skip] Update Docs"
+        git push
