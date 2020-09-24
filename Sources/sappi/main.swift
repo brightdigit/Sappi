@@ -22,3 +22,5 @@ struct SappiCommand : ParsableCommand {
     print(SystemInfo.fetch())   
   }
 }
+
+SappiCommand.main()
