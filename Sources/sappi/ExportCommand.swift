@@ -3,9 +3,12 @@ import SappiKit
 
 extension SappiCommand {
   struct ExportCommand: ParsableCommand {
-    static var configuration = CommandConfiguration(commandName: "export")
+    static var configuration = CommandConfiguration(
+      commandName: "export",
+      abstract: "Exports system information in any format."
+    )
 
-    @Option
+    @Option(help: "Export format.")
     var format: ExportFormat = .text
 
     @OptionGroup

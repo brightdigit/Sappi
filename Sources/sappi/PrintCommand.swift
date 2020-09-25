@@ -3,7 +3,8 @@ import SappiKit
 
 extension SappiCommand {
   struct PrintCommand: ParsableCommand {
-    static var configuration = CommandConfiguration(commandName: "print")
+    static var configuration = CommandConfiguration(commandName: "print",
+                                                    abstract: "Prints system information out to the console.")
 
     @OptionGroup
     var options: SappiOptions

@@ -1,15 +1,15 @@
 import ArgumentParser
 
 struct SappiOptions: ParsableArguments {
-  @Argument
+  @Argument(help: "Set of system information data, you'd like to receive.")
   var infoTypes = InfoType.allCases
 
-  @Option
+  @Option(help: "Format of value types")
   var valueFormat: RatioFormat = .default
 
-  @Flag
+  @Flag(help: "Output all values available.")
   var verbose: Bool = false
 
-  @Option
+  @Option(help: "Unit of Temperature")
   var temperatureUnit = TemperatureUnit.celsuis
 }
