@@ -4,6 +4,7 @@ import SappiKit
 enum ExportFormat: String, ExpressibleByArgument {
   case text
   case json
+  case csv
 }
 
 extension ExportFormat {
@@ -13,6 +14,8 @@ extension ExportFormat {
       return TextFormatter()
     case .json:
       return JSONFormatter()
+    case .csv:
+      return CSVFormatter()
     }
   }
 }

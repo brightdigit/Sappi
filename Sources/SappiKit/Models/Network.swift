@@ -1,4 +1,4 @@
-public struct Network : Codable{
+public struct Network: Codable {
   public let address: String
   public let family: InterfaceFamily
   public let name: String

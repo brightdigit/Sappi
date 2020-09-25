@@ -1,5 +1,5 @@
 import Foundation
-public struct SystemInfo : Codable {
+public struct SystemInfo: Codable {
   public let cpu: CPU
   public let volumes: [Volume]
   public let memory: Memory
@@ -51,10 +51,10 @@ public struct SystemInfo : Codable {
           temperatures.append(Temperature(value: Int(value), key: key))
         }
       }
-    
-    temperatures = Dictionary(grouping: temperatures, by: {$0.key}).compactMapValues{$0.first}.map{$0.value}.sorted(by: { (lhs, rhs) -> Bool in
-      return lhs.key.compare(rhs.key) == .orderedAscending
-    })
+
+      temperatures = Dictionary(grouping: temperatures, by: { $0.key }).compactMapValues { $0.first }.map { $0.value }.sorted(by: { (lhs, rhs) -> Bool in
+        lhs.key.compare(rhs.key) == .orderedAscending
+      })
     // https://superuser.com/questions/553197/interpreting-sensor-names
     #else
 
