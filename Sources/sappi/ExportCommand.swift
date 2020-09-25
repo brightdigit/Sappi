@@ -13,7 +13,7 @@ extension SappiCommand {
 
     func run() throws {
       var output = FileHandleStream.standardOutput
-      format.formatter.format(SystemInfo(), withOptions: options, to: &output)
+      try format.formatter.format(SystemInfo(), withOptions: options, to: &output)
     }
   }
 }

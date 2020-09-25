@@ -1,6 +1,6 @@
 import Foundation
 
-final class FileHandleStream: TextOutputStream {
+final class FileHandleStream: OutputStream {
   let fileHandle: FileHandle
 
   private init(_ fileHandle: FileHandle) {
@@ -8,7 +8,11 @@ final class FileHandleStream: TextOutputStream {
   }
 
   func write(_ string: String) {
-    fileHandle.write(Data(string.utf8))
+    write(Data(string.utf8))
+  }
+
+  func write(_ data: Data) {
+    fileHandle.write(data)
   }
 
   static let standardOutput = FileHandleStream(.standardOutput)

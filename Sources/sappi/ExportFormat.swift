@@ -3,6 +3,7 @@ import SappiKit
 
 enum ExportFormat: String, ExpressibleByArgument {
   case text
+  case json
 }
 
 extension ExportFormat {
@@ -10,6 +11,8 @@ extension ExportFormat {
     switch self {
     case .text:
       return TextFormatter()
+    case .json:
+      return JSONFormatter()
     }
   }
 }

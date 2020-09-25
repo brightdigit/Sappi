@@ -1,4 +1,4 @@
-public enum InterfaceFamily: Int, CustomStringConvertible {
+public enum InterfaceFamily: Int, CustomStringConvertible, Codable {
   /// IPv4.
   case ipv4
 
