@@ -15,5 +15,5 @@ final class FileHandleStream: OutputStream {
     fileHandle.write(data)
   }
 
-  static let standardOutput = FileHandleStream(.standardOutput)
+  static var standardOutput = FileHandleStream(.standardOutput)
 }

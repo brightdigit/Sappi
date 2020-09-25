@@ -17,8 +17,8 @@ struct CSVFormatter: Formatter {
     let typeSet = Set(options.infoTypes).sorted()
     let systemInfo = SystemInfo()
     var entries = [Entry]()
-    for type in typeSet {
-      switch type {
+    for contentType in typeSet {
+      switch contentType {
       case .cpu:
         entries.append(Entry(category: "CPU", label: "Usage", value: systemInfo.cpu.cpu.numerator.description, total: systemInfo.cpu.cpu.denominator.description))
         if options.verbose {
@@ -27,9 +27,9 @@ struct CSVFormatter: Formatter {
           }
           for (index, temp) in systemInfo.cpu.temperatures.enumerated() {
             if index == 0 {
-              entries.append(Entry(category: "CPU", label: "Die Temperature", value: nil, total: temp.value.description))
+              entries.append(Entry(category: "CPU", label: "Die Temperature \(type(of: options.temperatureUnit.scale).suffix)", value: nil, total: temp.value(inUnits: options.temperatureUnit).description))
             } else {
-              entries.append(Entry(category: "CPU", label: "Core \(index) Temperature", value: nil, total: temp.value.description))
+              entries.append(Entry(category: "CPU", label: "Core \(index) Temperature \(type(of: options.temperatureUnit.scale).suffix)", value: nil, total: temp.value(inUnits: options.temperatureUnit).description))
             }
           }
         }

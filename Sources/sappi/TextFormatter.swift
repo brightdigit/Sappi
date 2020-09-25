@@ -14,9 +14,9 @@ struct TextFormatter: Formatter {
           }
           for (index, temp) in systemInfo.cpu.temperatures.enumerated() {
             if index == 0 {
-              print("CPU Die Temperature:", "\(temp.value)°C", to: &target)
+              print("CPU Die Temperature:", temp.formatted(inUnits: options.temperatureUnit), to: &target)
             } else {
-              print("Core \(index) Temperature:", "\(temp.value)°C", to: &target)
+              print("Core \(index) Temperature:", temp.formatted(inUnits: options.temperatureUnit), to: &target)
             }
           }
         }

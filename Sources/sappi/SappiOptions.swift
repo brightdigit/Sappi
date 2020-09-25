@@ -9,4 +9,7 @@ struct SappiOptions: ParsableArguments {
 
   @Flag
   var verbose: Bool = false
+
+  @Option
+  var temperatureUnit = TemperatureUnit.celsuis
 }
