@@ -3,7 +3,7 @@
 # `CPU`
 
 ```swift
-public struct CPU
+public struct CPU: Codable
 ```
 
 ## Properties

@@ -3,7 +3,7 @@
 # `SystemInfo`
 
 ```swift
-public struct SystemInfo
+public struct SystemInfo: Codable
 ```
 
 ## Properties

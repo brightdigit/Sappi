@@ -3,7 +3,7 @@
 # `Memory`
 
 ```swift
-public struct Memory
+public struct Memory: Codable
 ```
 
 ## Properties

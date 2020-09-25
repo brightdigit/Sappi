@@ -3,7 +3,7 @@
 # `Volume`
 
 ```swift
-public struct Volume
+public struct Volume: Codable
 ```
 
 ## Properties

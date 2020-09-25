@@ -3,7 +3,7 @@
 # `Temperature`
 
 ```swift
-public struct Temperature
+public struct Temperature: Codable
 ```
 
 ## Properties

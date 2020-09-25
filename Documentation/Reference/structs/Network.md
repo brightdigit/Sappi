@@ -3,7 +3,7 @@
 # `Network`
 
 ```swift
-public struct Network
+public struct Network: Codable
 ```
 
 ## Properties

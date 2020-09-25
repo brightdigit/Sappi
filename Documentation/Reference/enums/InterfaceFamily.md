@@ -3,7 +3,7 @@
 # `InterfaceFamily`
 
 ```swift
-public enum InterfaceFamily: Int, CustomStringConvertible
+public enum InterfaceFamily: Int, CustomStringConvertible, Codable
 ```
 
 ## Cases
