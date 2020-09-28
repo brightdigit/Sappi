@@ -13,14 +13,20 @@ public enum ExportFormat: String, ExpressibleByArgument
 case text
 ```
 
+Standard Text Format
+
 ### `json`
 
 ```swift
 case json
 ```
 
+JSON Format
+
 ### `csv`
 
 ```swift
 case csv
 ```
+
+CSV Format

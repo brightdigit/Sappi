@@ -6,6 +6,8 @@
 public enum TemperatureUnit: String, ExpressibleByArgument
 ```
 
+Temperature Scales for Formatting.
+
 ## Cases
 ### `celsuis`
 
@@ -13,11 +15,15 @@ public enum TemperatureUnit: String, ExpressibleByArgument
 case celsuis
 ```
 
+Celsuis Scale
+
 ### `fahrenheit`
 
 ```swift
 case fahrenheit
 ```
+
+Fahrenheit Scale
 
 ### `rankine`
 
@@ -25,11 +31,15 @@ case fahrenheit
 case rankine
 ```
 
+Rankine Scale
+
 ### `delisle`
 
 ```swift
 case delisle
 ```
+
+Delisle Scale
 
 ### `newton`
 
@@ -37,14 +47,20 @@ case delisle
 case newton
 ```
 
+Newton Scale
+
 ### `réaumur`
 
 ```swift
 case réaumur
 ```
 
+Réaumur Scale
+
 ### `rømer`
 
 ```swift
 case rømer
 ```
+
+Rømer Scale
