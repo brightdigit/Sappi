@@ -140,7 +140,7 @@ class SysInfo {
         } // end while
         free(str)
         if numbers.count < 9 { return }
-        io[tag.trimmed] = ["rx": numbers[0] / 1_000_000, "tx": numbers[8] / 1_000_000]
+        netIO[tag.trimmed] = ["rx": numbers[0] / 1_000_000, "tx": numbers[8] / 1_000_000]
       }
     #else
       let ifaces = interfaces
