@@ -86,28 +86,65 @@ $ mint install brightdigit/Sappi
 
 # Usage 
 
-## Specifying Your Name via _Arguments_
+## Specifying Information via _Arguments_
 
-Swift Argument Parser will use the last `String` as the name argument for what to call you:
+Swift Argument Parser will use any non-flag or non-option and try to parse it into an `InfoType`. There are 5 accepted `InfoType` values:
 
-```bash
-$ hey Leo
-Hey Leo!
-```
+* `cpu` CPU and Core Usage. Includes temperature information in verbose mode.
+* `memory` Memory Usage.
+* `disks` Disk Volume Usage.
+* `processes`  Number of Active Processes.
+* `network` Each connected network and address.
 
-Therefore if you specify multiple names, it will simply use the last argument, which is not an option or flag (i.e. doesn't start with `--`):
-
-```bash
-$ hey Tim Leo  
-Hey Leo!
-```
-
-If you specificy no arguments for the name, then the assumed name is _Sap_:
 
 ```bash
-$ hey
-Hey Sap!
+$ sappi cpu
+CPU Usage: 10%
 ```
+
+If no arguments are supplied then all `InfoType` values are assumed:
+
+```bash
+$ sappi
+CPU Usage: 11%
+Memory Usage: 37%
+Usage of Media: 42% of 8001.35GB
+Usage of Google Drive: 41% of 16.1GB
+Usage of VM: 29% of 1000.24GB
+Usage of Preboot: 29% of 1000.24GB
+Usage of Update: 29% of 1000.24GB
+Usage of Time Machine: 77% of 5000.28GB
+Usage of Macintosh HD: 29% of 1000.24GB
+Usage of Photos: 26% of 2000.18GB
+Processes: 489
+IPv6 address for en0: fe80::1ca8:35c4:4859:684e
+IPv6 address for en0: 2600:1702:4050:7d30:4e9:86:816d:7e4d
+IPv6 address for en0: 2600:1702:4050:7d30:64a9:183f:3960:86bc
+IPv4 address for en0: 192.168.1.76
+IPv6 address for en0: 2600:1702:4050:7d30::51e
+IPv6 address for en1: fe80::81f:e405:7602:4003
+IPv6 address for en1: 2600:1702:4050:7d30:cdb:5f0f:d5be:d86a
+IPv6 address for en1: 2600:1702:4050:7d30:30dc:a334:3675:e05a
+IPv4 address for en1: 192.168.1.82
+IPv6 address for en1: 2600:1702:4050:7d30::72f
+```
+
+Multiple `InfoType` values are accepted:
+
+```bash
+$ sappi cpu disks
+CPU Usage: 10%
+Usage of Media: 42% of 8001.35GB
+Usage of Time Machine: 77% of 5000.28GB
+Usage of Photos: 26% of 2000.18GB
+Usage of Update: 29% of 1000.24GB
+Usage of Macintosh HD: 29% of 1000.24GB
+Usage of Preboot: 29% of 1000.24GB
+Usage of Google Drive: 41% of 16.1GB
+Usage of VM: 29% of 1000.24GB
+```
+
+For more information, check out [the code documentation page on `InfoType` here.](Documentation/Reference/enums/InfoType.md)
 
 ## Changing Your Salutation _Option_
 
