@@ -62,20 +62,40 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
    * Returns a new Interface instance that does not represent a real network interface, but can be used for (unit) testing.
    * - Returns: An instance of Interface that does *not* represent a real network interface.
    */
-  public static func createTestDummy(_ name: String, family: InterfaceFamily, address: String, multicastSupported: Bool, broadcastAddress: String?) -> Interface {
-    return Interface(name: name, family: family, address: address, netmask: nil, running: true, up: true, loopback: false, multicastSupported: multicastSupported, broadcastAddress: broadcastAddress)
+  public static func createTestDummy(
+    _ name: String,
+    family: InterfaceFamily,
+    address: String,
+    multicastSupported: Bool,
+    broadcastAddress: String?
+  ) -> Interface {
+    return Interface(
+      name: name, family: family, address: address,
+      netmask: nil, running: true, isUp: true, loopback: false,
+      multicastSupported: multicastSupported, broadcastAddress: broadcastAddress
+    )
   }
 
   /**
    * Initialize a new Interface with the given properties.
    */
-  public init(name: String, family: InterfaceFamily, address: String?, netmask: String?, running: Bool, up: Bool, loopback: Bool, multicastSupported: Bool, broadcastAddress: String?) {
+  public init(
+    name: String,
+    family: InterfaceFamily,
+    address: String?,
+    netmask: String?,
+    running: Bool,
+    isUp: Bool,
+    loopback: Bool,
+    multicastSupported: Bool,
+    broadcastAddress: String?
+  ) {
     self.name = name
     self.family = family
     self.address = address
     self.netmask = netmask
     self.running = running
-    self.up = up
+    self.isUp = isUp
     self.loopback = loopback
     self.multicastSupported = multicastSupported
     self.broadcastAddress = broadcastAddress
@@ -89,7 +109,7 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
               address: Interface.extractAddress(data.ifa_addr),
               netmask: Interface.extractAddress(data.ifa_netmask),
               running: (flags & IFF_RUNNING) == IFF_RUNNING,
-              up: (flags & IFF_UP) == IFF_UP,
+              isUp: (flags & IFF_UP) == IFF_UP,
               loopback: (flags & IFF_LOOPBACK) == IFF_LOOPBACK,
               multicastSupported: (flags & IFF_MULTICAST) == IFF_MULTICAST,
               broadcastAddress: (broadcastValid && destinationAddress(data) != nil) ? Interface.extractAddress(destinationAddress(data)) : nil)
@@ -125,9 +145,9 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
     return address.withMemoryRebound(to: sockaddr.self, capacity: 1) { addr in
       var address: String?
       var hostname = [CChar](repeating: 0, count: Int(2049))
-      if getnameinfo(&addr.pointee, socklen_t(socketLength4(addr.pointee)), &hostname,
-                     socklen_t(hostname.count), nil, socklen_t(0), NI_NUMERICHOST) == 0
-      {
+      let nameInfo = (getnameinfo(&addr.pointee, socklen_t(socketLength4(addr.pointee)), &hostname,
+                                  socklen_t(hostname.count), nil, socklen_t(0), NI_NUMERICHOST) == 0)
+      if nameInfo {
         address = String(cString: hostname)
       } else {
         //            var error = String.fromCString(gai_strerror(errno))!
@@ -139,13 +159,13 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
 
   fileprivate static func extractAddress_ipv6(_ address: UnsafeMutablePointer<sockaddr_storage>) -> String? {
     var addr = address.pointee
-    var ip = [Int8](repeating: Int8(0), count: Int(INET6_ADDRSTRLEN))
-    return inetNtoP(&addr, ip: &ip)
+    var ipAddress = [Int8](repeating: Int8(0), count: Int(INET6_ADDRSTRLEN))
+    return inetNtoP(&addr, ipAddr: &ipAddress)
   }
 
-  fileprivate static func inetNtoP(_ addr: UnsafeMutablePointer<sockaddr_storage>, ip: UnsafeMutablePointer<Int8>) -> String? {
+  fileprivate static func inetNtoP(_ addr: UnsafeMutablePointer<sockaddr_storage>, ipAddr: UnsafeMutablePointer<Int8>) -> String? {
     return addr.withMemoryRebound(to: sockaddr_in6.self, capacity: 1) { addr6 in
-      let conversion: UnsafePointer<CChar> = inet_ntop(AF_INET6, &addr6.pointee.sin6_addr, ip, socklen_t(INET6_ADDRSTRLEN))
+      let conversion: UnsafePointer<CChar> = inet_ntop(AF_INET6, &addr6.pointee.sin6_addr, ipAddr, socklen_t(INET6_ADDRSTRLEN))
       return String(cString: conversion)
     }
   }
@@ -156,28 +176,25 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
   open var addressBytes: [UInt8]? {
     guard let addr = address else { return nil }
 
-    let af: Int32
+    let addressFamily: Int32
     let len: Int
     switch family {
     case .ipv4:
-      af = AF_INET
+      addressFamily = AF_INET
       len = 4
     case .ipv6:
-      af = AF_INET6
+      addressFamily = AF_INET6
       len = 16
     default:
       return nil
     }
     var bytes = [UInt8](repeating: 0, count: len)
-    let result = inet_pton(af, addr, &bytes)
+    let result = inet_pton(addressFamily, addr, &bytes)
     return (result == 1) ? bytes : nil
   }
 
   /// `IFF_RUNNING` flag of `ifaddrs->ifa_flags`.
   open var isRunning: Bool { return running }
-
-  /// `IFF_UP` flag of `ifaddrs->ifa_flags`.
-  open var isUp: Bool { return up }
 
   /// `IFF_LOOPBACK` flag of `ifaddrs->ifa_flags`.
   open var isLoopback: Bool { return loopback }
@@ -201,7 +218,7 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
   public let broadcastAddress: String?
 
   fileprivate let running: Bool
-  fileprivate let up: Bool
+  public let isUp: Bool
   fileprivate let loopback: Bool
   fileprivate let multicastSupported: Bool
 
@@ -211,8 +228,8 @@ class Interface: CustomStringConvertible, CustomDebugStringConvertible, Identifi
   /// Returns a string containing a few properties of the Interface.
   open var debugDescription: String {
     var string = "Interface name:\(name) family:\(family)"
-    if let ip = address {
-      string += " ip:\(ip)"
+    if let ipAddress = address {
+      string += " ip:\(ipAddress)"
     }
     string += isUp ? " (up)" : " (down)"
     string += isRunning ? " (running)" : "(not running)"

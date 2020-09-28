@@ -29,6 +29,7 @@ public struct SystemInfo: Codable {
     return num
   }
 
+  // swiftlint:disable:next cyclomatic_complexity function_body_length
   public init() {
     var temperatures = [Temperature]()
     #if canImport(IOKit)
@@ -52,10 +53,13 @@ public struct SystemInfo: Codable {
         }
       }
 
-      temperatures = Dictionary(grouping: temperatures, by: { $0.key }).compactMapValues { $0.first }.map { $0.value }.sorted(by: { (lhs, rhs) -> Bool in
-        lhs.key.compare(rhs.key) == .orderedAscending
-      })
-    // https://superuser.com/questions/553197/interpreting-sensor-names
+      temperatures = Dictionary(
+        grouping: temperatures, by: { $0.key }
+      ).compactMapValues { $0.first }
+        .map { $0.value }
+        .sorted(by: { (lhs, rhs) -> Bool in
+          lhs.key.compare(rhs.key) == .orderedAscending
+        })
     #else
 
       let baseURL = URL(fileURLWithPath: "/sys/class/thermal/")
@@ -82,7 +86,6 @@ public struct SystemInfo: Codable {
 
     let mainCpu: CPUData
     let cores: [CPUData]
-    let cpuValue: Double?
     let sysCPU = SysInfo.CPU
     guard let cpuS = sysCPU["cpu"] else {
       fatalError()
@@ -103,10 +106,20 @@ public struct SystemInfo: Codable {
 
     let cpu = CPU(cores: cores, cpu: mainCpu, temperatures: temperatures)
     var volumedict = [String: Volume]()
-    let volumeURLs = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey], options: []) ?? []
+    let resourceKeys: [URLResourceKey] = [
+      .volumeURLKey,
+      .volumeNameKey,
+      .volumeAvailableCapacityKey,
+      .volumeTotalCapacityKey
+    ]
+    let volumeURLs = FileManager.default.mountedVolumeURLs(
+      includingResourceValuesForKeys: resourceKeys, options: []
+    ) ?? []
 
     for volume in volumeURLs {
-      guard let resourceValues = try? volume.resourceValues(forKeys: [.volumeURLKey, .volumeNameKey, .volumeAvailableCapacityKey, .volumeTotalCapacityKey]) else {
+      guard let resourceValues = try? volume.resourceValues(
+        forKeys: Set(resourceKeys))
+      else {
         continue
       }
 
@@ -146,10 +159,15 @@ public struct SystemInfo: Codable {
     #if canImport(Darwin)
       var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0]
       var size = 0
-      let ret = sysctl(&mib, 4, nil, &size, nil, 0)
+      _ = sysctl(&mib, 4, nil, &size, nil, 0)
       processesCount = size / MemoryLayout<kinfo_proc>.size
     #else
-      let contents = (try? FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: "/proc"), includingPropertiesForKeys: nil, options: [])) ?? [URL]()
+      let contents = (
+        try? FileManager.default.contentsOfDirectory(
+          at: URL(fileURLWithPath: "/proc"),
+          includingPropertiesForKeys: nil, options: []
+        )
+      ) ?? [URL]()
       var count = 0
       for dir: URL in contents {
         if FileManager.default.fileExists(atPath: dir.appendingPathComponent("task").path) {

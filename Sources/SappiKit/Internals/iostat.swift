@@ -62,8 +62,8 @@
         if drive == io_object_t(0) {
         } else {
           do {
-            let st = try record_device(drive)
-            drivestat.append(st)
+            let driverStats = try record_device(drive)
+            drivestat.append(driverStats)
           } catch {} // ignore
         }
         IOObjectRelease(drive)

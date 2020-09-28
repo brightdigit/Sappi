@@ -10,8 +10,8 @@ public protocol Rational {
 
 extension Rational {
   var labelledSum: String {
-    if let su = self as? SummableUnits {
-      return su.labelledSum
+    if let units = self as? SummableUnits {
+      return units.labelledSum
     } else {
       return "\(denominator)"
     }

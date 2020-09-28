@@ -24,7 +24,7 @@ public enum InfoType: String, ExpressibleByArgument, CaseIterable, Comparable {
     Each connected network and address.
    */
   case network
-  
+
   /**
     Sorted value.
    */

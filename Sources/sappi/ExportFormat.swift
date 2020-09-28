@@ -2,8 +2,11 @@ import ArgumentParser
 import SappiKit
 
 public enum ExportFormat: String, ExpressibleByArgument {
+  /// Standard Text Format
   case text
+  /// JSON Format
   case json
+  /// CSV Format
   case csv
 }
 

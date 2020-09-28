@@ -4,6 +4,7 @@ public protocol TemperatureUnitScale {
   static var suffix: String { get }
 }
 
+// swiftlint:disable nesting
 public extension TemperatureUnit {
   struct Scales {
     static let celsuis = Celsuis.scale

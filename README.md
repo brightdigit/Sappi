@@ -146,61 +146,114 @@ Usage of VM: 29% of 1000.24GB
 
 For more information, check out [the code documentation page on `InfoType` here.](Documentation/Reference/enums/InfoType.md)
 
-## Changing Your Salutation _Option_
+## Formatting _Options_ For Values
 
-You can choose from a variety of options for your salutation. Currently, **Sappi** supports:
+**Sappi** gives you the ability to format cetain numerical values. 
 
-* `hey` = "Hey" [**default**]
-* `hello` = "Hello"
-* `ciao` = "Ciao"
-* `buongiorno` = "Buongiorno"
-* `cheers` = "Cheers"
-* `greetings` = "Greetings"
-* `hi` = "Hi"
-* `howdy` = "Howdy"
-* `welcome` = "Welcome"
-* `bonjour` = "Bonjour"
-* `sup` = "Sup 🤜" (i.e. _Sup_ with a fist pump 🤜)
-* `heeey` = "Heeey 😎" (i.e. _Heeey_ with sunglass emoji 😎)
+Values such _CPU_, _Memory_, and _Disk_ allow for different ways to display usage or availability in relationship to the total by using the `--value-format=` option:
 
-To change the salutation from the default _Hey_ simply pass the option `--salutation=`:
+* `percent` - percent value
+* `ratio` - units / total units
+* `percentTotal` - percent / total units
+* `default` - `percent` for _CPU_ and _Memory, `percentTotal` for _Disks_
 
 ```bash
-$ hey World --salutation=hello
-Hello World!
+$ sappi cpu memory disks --value-format=percent
+CPU Usage: 20%
+Memory Usage: 98%
+Usage of Google Drive: 41%
+Usage of Update: 15%
+Usage of System: 15%
+Usage of VM: 15%
+Usage of Preboot: 15%
 ```
 
 or
 
 ```bash
-$ hey Dude --salutation=heeey
-Heeey 😎 Dude!
+$ sappi cpu memory disks --value-format=ratio  
+CPU Usage: 2416633 idle, 3053548 total
+Memory Usage: 43 free, 6504 total
+Usage of Update: 1619969011712 available, 1920140099584 total
+Usage of Preboot: 1619969011712 available, 1920140099584 total
+Usage of VM: 1619969011712 available, 1920140099584 total
+Usage of Google Drive: 9482440704 available, 16106127360 total
+Usage of System: 1619969011712 available, 1920140099584 total
 ```
 
-If you supply no salutation, you will get the _default_ salutation, _Hey_:
+For more information on the different value formats, check out [the documentation page on `RatioFormat` here.](Documentation/Reference/enums/RatioFormat.md)
+
+## Getting CPU Temperature
+
+__Sappi__ also has the ability to get various temperature available for your hardware. First you'll need to enable the `--verbose` option to get this information:
 
 ```bash
-$ hey World
-Hey World!
+$ sappi cpu --verbose
+CPU Usage: 20%
+CPU 1 Usage: 31%
+CPU 2 Usage: 13%
+CPU 3 Usage: 26%
+CPU 4 Usage: 11%
+CPU Die Temperature: 64.0°C
+Core 1 Temperature: 64.0°C
 ```
 
-For more information on salutions, please refer to [the code documentation page here](Documentation/Reference/Salutation.md).
+__Sappi__ also gives you the option to format the temperature in various scales:
 
-## _Flags_ for More Verbose Greetings
+* `celsuis` Celsuis Scale _default_
+* `fahrenheit` Fahrenheit Scale
+* `rankine` Rankine Scale
+* `delisle` Delisle Scale
+* `newton` Newton Scale
+* `réaumur` Réaumur Scale
+* `rømer` Rømer Scale
 
-If you wish _Sappi_ to offer a more verbose greeeting, simply use the flag `--verbose`. With the `--verbose` flag, you will receive an extended `How's your day?`:
+For more information, check out [the documentation page for `TemperatureUnit` here.](Documentation/Reference/enums/TemperatureUnit.md)
+
+## Exporting Your Data
+
+Lastly, __Sappi__ supports exporting data in various formats via the `exporting` subcommand. You've already seen the default subcommand `print` which only supports the `text` format.
 
 ```bash
-$ hey --verbose
-Hey Sap, How's Your Day?
+$ sappi cpu disks
+CPU Usage: 10%
+Usage of Media: 42% of 8001.35GB
+Usage of Time Machine: 77% of 5000.28GB
+Usage of Photos: 26% of 2000.18GB
+Usage of Update: 29% of 1000.24GB
+Usage of Macintosh HD: 29% of 1000.24GB
+Usage of Preboot: 29% of 1000.24GB
+Usage of Google Drive: 41% of 16.1GB
+Usage of VM: 29% of 1000.24GB
+$ sappi print cpu disks
+CPU Usage: 10%
+Usage of Media: 42% of 8001.35GB
+Usage of Time Machine: 77% of 5000.28GB
+Usage of Photos: 26% of 2000.18GB
+Usage of Update: 29% of 1000.24GB
+Usage of Macintosh HD: 29% of 1000.24GB
+Usage of Preboot: 29% of 1000.24GB
+Usage of Google Drive: 41% of 16.1GB
+Usage of VM: 29% of 1000.24GB
+$ sappi export cpu disks --export-format=text
+CPU Usage: 10%
+Usage of Media: 42% of 8001.35GB
+Usage of Time Machine: 77% of 5000.28GB
+Usage of Photos: 26% of 2000.18GB
+Usage of Update: 29% of 1000.24GB
+Usage of Macintosh HD: 29% of 1000.24GB
+Usage of Preboot: 29% of 1000.24GB
+Usage of Google Drive: 41% of 16.1GB
+Usage of VM: 29% of 1000.24GB
 ```
 
-By combining all these components, you can build something like this:
+To export in various formats, use the subcommand `export`. Then use the `--format=` to specify a different format other than `text`:
 
-```bash
-$ hey Maximiliano --salutation=buongiorno --verbose
-Buongiorno Maximiliano, How's Your Day?
-```
+* `text` - Standard text format _default_
+* `json` - JSON format (ignores  `--value-format` and `--verbose`)
+* `csv` - Comma-Separated Values 
+
+For more information, check out [the documentation page for `ExportFormat` here.](Documentation/Reference/enums/ExportFormat.md)
 
 # Support 
 
