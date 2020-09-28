@@ -1,6 +1,6 @@
 import SappiKit
 
-extension Temperature {
+public extension Temperature {
   func value(inUnits unit: TemperatureUnit) -> Double {
     let doubleValue = Double(value)
     let scale = type(of: unit.scale)

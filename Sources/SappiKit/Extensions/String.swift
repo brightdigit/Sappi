@@ -81,10 +81,6 @@ extension String {
     return matched
   } // end match
 
-  /// translate a labeless / space delimited string into a dictionry with the given definition
-  /// - parameters:
-  ///   - definition: an array for the expected string definition, each element is a name/type pair, which type only means string or non-string simply because only string needs quote in output
-  /// - returns: dictionary
   internal func parse(definition: [(keyName: String, isString: Bool)]) -> [String: String] {
     let values = utf8.split(separator: 32).map { String($0) ?? "" }.filter { !$0.isEmpty }
     let size = min(values.count, definition.count)

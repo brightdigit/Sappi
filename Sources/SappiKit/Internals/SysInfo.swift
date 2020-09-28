@@ -114,7 +114,7 @@ class SysInfo {
   /// return total traffic summary from all interfaces,
   /// i for receiving and o for transmitting, both in KB
   public static var Net: [String: [String: Int]] {
-    var io: [String: [String: Int]] = [:]
+    var netIO: [String: [String: Int]] = [:]
     #if os(Linux)
       guard let content = "/proc/net/dev".asFile else { return [:] }
       content.asLines.map { line -> (String, String) in
@@ -140,7 +140,7 @@ class SysInfo {
         } // end while
         free(str)
         if numbers.count < 9 { return }
-        io[tag.trimmed] = ["rx": numbers[0] / 1_000_000, "tx": numbers[8] / 1_000_000]
+        netIO[tag.trimmed] = ["rx": numbers[0] / 1_000_000, "tx": numbers[8] / 1_000_000]
       }
     #else
       let ifaces = interfaces
@@ -160,11 +160,10 @@ class SysInfo {
               let ifm = pIfm.pointee
               cursor += Int(ifm.ifm_msglen)
               if integer_t(ifm.ifm_type) == RTM_IFINFO2 {
-                pIfm.withMemoryRebound(to: if_msghdr2.self, capacity: MemoryLayout<if_msghdr2>.size) {
-                  _ in
-                  let pd = pIfm.pointee
+                pIfm.withMemoryRebound(to: if_msghdr2.self, capacity: MemoryLayout<if_msghdr2>.size) { _ in
+                  let ifPd = pIfm.pointee
                   if index < ifaces.count {
-                    io[ifaces[index]] = ["rx": Int(pd.ifm_data.ifi_ibytes) / 1_000_000, "tx": Int(pd.ifm_data.ifi_obytes) / 1_000_000]
+                    netIO[ifaces[index]] = ["rx": Int(ifPd.ifm_data.ifi_ibytes) / 1_000_000, "tx": Int(ifPd.ifm_data.ifi_obytes) / 1_000_000]
                   } // end if
                   index += 1
                 } // end ifm2
@@ -179,13 +178,25 @@ class SysInfo {
         return [:]
       } // end buf
     #endif
-    return io
+    return netIO
   }
 
   /// return physical CPU information
   public static var CPU: [String: [String: Int]] {
     #if os(Linux)
-      let definition: [(keyName: String, isString: Bool)] = [("name", true), ("user", false), ("nice", false), ("system", false), ("idle", false), ("iowait", false), ("irq", false), ("softirq", false), ("steal", false), ("guest", false), ("guest_nice", false)]
+      let definition: [(keyName: String, isString: Bool)] = [
+        ("name", true),
+        ("user", false),
+        ("nice", false),
+        ("system", false),
+        ("idle", false),
+        ("iowait", false),
+        ("irq", false),
+        ("softirq", false),
+        ("steal", false),
+        ("guest", false),
+        ("guest_nice", false)
+      ]
       guard let content = "/proc/stat".asFile else { return [:] }
       let array = content.asLines.filter { $0.match(prefix: "cpu") }
         .map { $0.parse(definition: definition) }
@@ -212,8 +223,7 @@ class SysInfo {
       let cpuLoad = cpuLoadArray.withMemoryRebound(
         to: processor_cpu_load_info.self,
         capacity: Int(processorCount) * MemoryLayout<processor_cpu_load_info>.size
-      ) {
-        ptr -> processor_cpu_load_info_t in
+      ) { ptr -> processor_cpu_load_info_t in
         ptr
       }
       var lines: [String: [String: Int]] = [:]
@@ -250,8 +260,8 @@ class SysInfo {
         let lines: [String] = line.split(separator: Character(":")).map(String.init)
         let key = lines[0]
         guard lines.count > 1, let str = strdup(lines[1]) else { return }
-        if let kb = strstr(str, "kB") {
-          kb.pointee = 0
+        if let kBStr = strstr(str, "kB") {
+          kBStr.pointee = 0
         } // end if
         let value = String(cString: str).trimmed
         stat[key] = (Int(value) ?? 0) / 1024

@@ -1,9 +1,9 @@
 import ArgumentParser
 import SappiKit
 
-extension SappiCommand {
+public extension SappiCommand {
   struct ExportCommand: ParsableCommand {
-    static var configuration = CommandConfiguration(
+    public static var configuration = CommandConfiguration(
       commandName: "export",
       abstract: "Exports system information in any format."
     )
@@ -14,9 +14,11 @@ extension SappiCommand {
     @OptionGroup
     var options: SappiOptions
 
-    func run() throws {
+    public func run() throws {
       var output = FileHandleStream.standardOutput
       try format.formatter.format(SystemInfo(), withOptions: options, to: &output)
     }
+
+    public init() {}
   }
 }
