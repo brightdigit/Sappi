@@ -1,10 +1,10 @@
-protocol TemperatureUnitScale {
+public protocol TemperatureUnitScale {
   static var factor: Double { get }
   static var offset: Double { get }
   static var suffix: String { get }
 }
 
-extension TemperatureUnit {
+public extension TemperatureUnit {
   struct Scales {
     static let celsuis = Celsuis.scale
     static let fahrenheit = Fahrenheit.scale

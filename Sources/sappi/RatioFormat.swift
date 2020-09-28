@@ -1,6 +1,6 @@
 import ArgumentParser
 
-enum RatioFormat: String, ExpressibleByArgument {
+public enum RatioFormat: String, ExpressibleByArgument {
   case percent
   case ratio
   case `default`

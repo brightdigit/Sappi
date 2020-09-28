@@ -1,8 +1,8 @@
 import Foundation
 import SappiKit
 
-struct CSVFormatter: Formatter {
-  struct Entry {
+public struct CSVFormatter: Formatter {
+  public struct Entry {
     let category: String
     let label: String
     let value: String?
@@ -13,7 +13,7 @@ struct CSVFormatter: Formatter {
     }
   }
 
-  func format<Target>(_ systemInfo: SystemInfo, withOptions options: SappiOptions, to target: inout Target) throws where Target: TextOutputStream, Target: BinaryOutputStream {
+  public func format<Target>(_ systemInfo: SystemInfo, withOptions options: SappiOptions, to target: inout Target) throws where Target: TextOutputStream, Target: BinaryOutputStream {
     let typeSet = Set(options.infoTypes).sorted()
     let systemInfo = SystemInfo()
     var entries = [Entry]()

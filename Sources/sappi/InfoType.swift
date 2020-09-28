@@ -1,6 +1,6 @@
 import ArgumentParser
 
-enum InfoType: String, ExpressibleByArgument, CaseIterable, Comparable {
+public enum InfoType: String, ExpressibleByArgument, CaseIterable, Comparable {
   case cpu
   case memory
   case disks
@@ -22,7 +22,7 @@ enum InfoType: String, ExpressibleByArgument, CaseIterable, Comparable {
     }
   }
 
-  static func < (lhs: InfoType, rhs: InfoType) -> Bool {
+  public static func < (lhs: InfoType, rhs: InfoType) -> Bool {
     lhs.value < rhs.value
   }
 }

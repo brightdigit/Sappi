@@ -1,7 +1,7 @@
 import ArgumentParser
 import SappiKit
 
-enum TemperatureUnit: String, ExpressibleByArgument {
+public enum TemperatureUnit: String, ExpressibleByArgument {
   case celsuis
   case fahrenheit
   case rankine

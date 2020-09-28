@@ -1,49 +1,174 @@
-# Sappi
+
+&nbsp;
+
+<p align="center">
+    <img alt="Sappi" title="Sappi" src="Assets/logo.svg" height="200">
+</p>
+<h1 align="center">Sappi</h1>
+
+Command Line Tool for Gathering System Information using Swift Argument Parser
 
 [![SwiftPM](https://img.shields.io/badge/SPM-Linux%20%7C%20iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS-success?logo=swift)](https://swift.org)
 [![Twitter](https://img.shields.io/badge/twitter-@brightdigit-blue.svg?style=flat)](http://twitter.com/brightdigit)
 ![GitHub](https://img.shields.io/github/license/brightdigit/Sappi)
 ![GitHub issues](https://img.shields.io/github/issues/brightdigit/Sappi)
-[![Beerpay](https://img.shields.io/beerpay/brightdigit/Sappi.svg?maxAge=2592000)](https://beerpay.io/brightdigit/Sappi)
 
 [![macOS](https://github.com/brightdigit/Sappi/workflows/macOS/badge.svg)](https://github.com/brightdigit/Sappi/actions?query=workflow%3AmacOS)
 [![ubuntu](https://github.com/brightdigit/Sappi/workflows/ubuntu/badge.svg)](https://github.com/brightdigit/Sappi/actions?query=workflow%3Aubuntu)
-[![Travis (.com)](https://img.shields.io/travis/com/brightdigit/Sappi?logo=travis)](https://travis-ci.com/brightdigit/Sappi)
+[![Travis (.com)](https://img.shields.io/travis/com/brightdigit/Sappi?logo=travis&?label=travis-ci)](https://travis-ci.com/brightdigit/Sappi)
+[![Bitrise](https://img.shields.io/bitrise/851943f7407ad016?logo=bitrise&?label=bitrise&token=jJAyoyJ-teNSI-9aDqJKSw)](https://app.bitrise.io/app/851943f7407ad016)
+[![CircleCI](https://img.shields.io/circleci/build/github/brightdigit/Sappi?logo=circleci&?label=circle-ci&token=ee241fe22c5f6330a56357965bc13dbf2bcafc63)](https://app.circleci.com/pipelines/github/brightdigit/Sappi)
+
 [![Codecov](https://img.shields.io/codecov/c/github/brightdigit/Sappi)](https://codecov.io/gh/brightdigit/Sappi)
 [![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/brightdigit/Sappi)](https://www.codefactor.io/repository/github/brightdigit/Sappi)
-[![codebeat badge](https://codebeat.co/badges/4f86fb90-f8de-40c5-ab63-e6069cde5002)](https://codebeat.co/projects/github-com-brightdigit-Sappi-master)
+[![codebeat badge](https://codebeat.co/badges/c47b7e58-867c-410b-80c5-57e10140ba0f)](https://codebeat.co/projects/github-com-brightdigit-Sappi-main)
 [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/brightdigit/Sappi)](https://codeclimate.com/github/brightdigit/Sappi)
 [![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/brightdigit/Sappi?label=debt)](https://codeclimate.com/github/brightdigit/Sappi)
 [![Code Climate issues](https://img.shields.io/codeclimate/issues/brightdigit/Sappi)](https://codeclimate.com/github/brightdigit/Sappi)
-
-[![Version](https://img.shields.io/cocoapods/v/Sappi.svg?style=flat)](https://cocoapods.org/pods/Sappi)
-[![License](https://img.shields.io/cocoapods/l/Sappi.svg?style=flat)](https://cocoapods.org/pods/Sappi)
-[![Platform](https://img.shields.io/cocoapods/p/Sappi.svg?style=flat)](https://cocoapods.org/pods/Sappi)
-![Cocoapods doc percentage](https://img.shields.io/cocoapods/metrics/doc-percent/Sappi)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
-# Requirements 
+```bash
+$ sappi -h
+OVERVIEW: Prints and exports system information.
 
-* [CocoaPods](https://cocoapods.org)
-* [XCodeGen](https://github.com/yonaskolb/XcodeGen)
-* [SourceDocs](https://github.com/eneko/SourceDocs)
+USAGE: sappi <subcommand>
 
-# How to get started
+OPTIONS:
+  -h, --help              Show help information.
 
-1. [Use the template](https://github.com/brightdigit/EggSeed/generate)
-2. Run [`./setup.sh`](https://github.com/brightdigit/EggSeed/blob/master/setup.sh) once you have your own repo. 
-3. It will create the corresponding files for your Swift Package/Cocoapod/Carthage.
-4. Customize by 
-  * updating Package.swift
-  * supported OSes in Pod spec
-  * update [SwiftFormat](https://github.com/brightdigit/EggSeed/blob/master/.swiftformat) and [SwiftLint](https://github.com/brightdigit/EggSeed/blob/master/.swiftlint.yml) settings
-  * Add Documentation and Notes to README.md
-  * update [travis-ci](https://github.com/brightdigit/EggSeed/blob/master/.travis.yml) or [github actions files](https://github.com/brightdigit/EggSeed/tree/master/.github/workflows)
-  * integrate third-party analysis services and badges such as [CodeCov](https://codecov.io), [CodeClimate](https://codeclimate.com), [CodeFactor](https://www.codefactor.io/dashboard), [Hound](https://houndci.com)
-5. Code Away!
-5. Add to [SwiftPM](https://github.com/daveverwer/SwiftPMLibrary)
+SUBCOMMANDS:
+  print (default)         Prints system information out to the console.
+  export                  Exports system information in any format.
 
-# DESCRIPTION HERE
+  See 'sappi help <subcommand>' for detailed help.
 
-[Documentation Here](/docs/README.md)
+
+$ sappi 
+CPU Usage: 6%
+Memory Usage: 95%
+Usage of VM: 28% of 1000.24GB
+Usage of Preboot: 28% of 1000.24GB
+Usage of Media: 42% of 8001.35GB
+Usage of Google Drive: 41% of 16.1GB
+Usage of Update: 28% of 1000.24GB
+Usage of Photos: 26% of 2000.18GB
+Usage of Macintosh HD: 28% of 1000.24GB
+Usage of Time Machine: 77% of 5000.28GB
+Processes: 662
+IPv6 address for en0: fe80::10cb:4190:8fe4:ed28
+IPv4 address for en0: 192.168.1.76
+IPv6 address for en0: 2600:1702:4050:7d30:4e9:86:816d:7e4d
+IPv6 address for en0: 2600:1702:4050:7d30:88d3:849e:4a65:6aa3
+IPv6 address for en0: 2600:1702:4050:7d30::51e
+IPv6 address for en1: fe80::10c0:5193:8bf8:b99
+IPv6 address for en1: 2600:1702:4050:7d30:cdb:5f0f:d5be:d86a
+IPv6 address for en1: 2600:1702:4050:7d30:192e:3dc6:3d66:6acc
+IPv4 address for en1: 192.168.1.82
+IPv6 address for en1: 2600:1702:4050:7d30::72f
+IPv6 address for en1: 2600:1702:4050:7d30:2193:e7f4:7fc4:97ef
+```
+
+# Introduction
+
+This is a simple command line Swift Package for displaying system information as well as showing the power of the Swift Argument Parser:
+
+* An example of optional **Arguments**
+* Using enums in **Options**
+* How to use **Flags** for verbose information
+
+# Installation
+
+The simplest way to install this application is via **mint**. Install **mint** via homebrew then run:
+
+```bash
+$ mint install brightdigit/Sappi
+```
+
+# Usage 
+
+## Specifying Your Name via _Arguments_
+
+Swift Argument Parser will use the last `String` as the name argument for what to call you:
+
+```bash
+$ hey Leo
+Hey Leo!
+```
+
+Therefore if you specify multiple names, it will simply use the last argument, which is not an option or flag (i.e. doesn't start with `--`):
+
+```bash
+$ hey Tim Leo  
+Hey Leo!
+```
+
+If you specificy no arguments for the name, then the assumed name is _Sap_:
+
+```bash
+$ hey
+Hey Sap!
+```
+
+## Changing Your Salutation _Option_
+
+You can choose from a variety of options for your salutation. Currently, **Sappi** supports:
+
+* `hey` = "Hey" [**default**]
+* `hello` = "Hello"
+* `ciao` = "Ciao"
+* `buongiorno` = "Buongiorno"
+* `cheers` = "Cheers"
+* `greetings` = "Greetings"
+* `hi` = "Hi"
+* `howdy` = "Howdy"
+* `welcome` = "Welcome"
+* `bonjour` = "Bonjour"
+* `sup` = "Sup 🤜" (i.e. _Sup_ with a fist pump 🤜)
+* `heeey` = "Heeey 😎" (i.e. _Heeey_ with sunglass emoji 😎)
+
+To change the salutation from the default _Hey_ simply pass the option `--salutation=`:
+
+```bash
+$ hey World --salutation=hello
+Hello World!
+```
+
+or
+
+```bash
+$ hey Dude --salutation=heeey
+Heeey 😎 Dude!
+```
+
+If you supply no salutation, you will get the _default_ salutation, _Hey_:
+
+```bash
+$ hey World
+Hey World!
+```
+
+For more information on salutions, please refer to [the code documentation page here](Documentation/Reference/Salutation.md).
+
+## _Flags_ for More Verbose Greetings
+
+If you wish _Sappi_ to offer a more verbose greeeting, simply use the flag `--verbose`. With the `--verbose` flag, you will receive an extended `How's your day?`:
+
+```bash
+$ hey --verbose
+Hey Sap, How's Your Day?
+```
+
+By combining all these components, you can build something like this:
+
+```bash
+$ hey Maximiliano --salutation=buongiorno --verbose
+Buongiorno Maximiliano, How's Your Day?
+```
+
+# Support 
+
+If you have any questions or issues with the application, feel free to post [an issue here.](issues) 
+
+# License 
+
+This code is distributed under the MIT license. See the [LICENSE](LICENSE) file for more info.

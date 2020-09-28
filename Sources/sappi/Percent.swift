@@ -1,4 +1,4 @@
-struct Percent: CustomStringConvertible {
+public struct Percent: CustomStringConvertible {
   let denominator: Int
   let numerator: Int
 
