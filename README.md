@@ -16,8 +16,8 @@ Command Line Tool for Gathering System Information using Swift Argument Parser
 [![macOS](https://github.com/brightdigit/Sappi/workflows/macOS/badge.svg)](https://github.com/brightdigit/Sappi/actions?query=workflow%3AmacOS)
 [![ubuntu](https://github.com/brightdigit/Sappi/workflows/ubuntu/badge.svg)](https://github.com/brightdigit/Sappi/actions?query=workflow%3Aubuntu)
 [![Travis (.com)](https://img.shields.io/travis/com/brightdigit/Sappi?logo=travis&?label=travis-ci)](https://travis-ci.com/brightdigit/Sappi)
-[![Bitrise](https://img.shields.io/bitrise/851943f7407ad016?logo=bitrise&?label=bitrise&token=jJAyoyJ-teNSI-9aDqJKSw)](https://app.bitrise.io/app/851943f7407ad016)
-[![CircleCI](https://img.shields.io/circleci/build/github/brightdigit/Sappi?logo=circleci&?label=circle-ci&token=ee241fe22c5f6330a56357965bc13dbf2bcafc63)](https://app.circleci.com/pipelines/github/brightdigit/Sappi)
+[![Bitrise](https://img.shields.io/bitrise/0271aac7908e09e7?logo=bitrise&?label=bitrise&token=xFr5fBpmZrMixL-YQKEhRQ)](https://app.bitrise.io/app/0271aac7908e09e7)
+[![CircleCI](https://img.shields.io/circleci/build/github/brightdigit/Sappi?logo=circleci&?label=circle-ci&token=f7c9bff37b0287d33ed3796b933ee2c1a425f9f2)](https://app.circleci.com/pipelines/github/brightdigit/Sappi)
 
 [![Codecov](https://img.shields.io/codecov/c/github/brightdigit/Sappi)](https://codecov.io/gh/brightdigit/Sappi)
 [![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/brightdigit/Sappi)](https://www.codefactor.io/repository/github/brightdigit/Sappi)
