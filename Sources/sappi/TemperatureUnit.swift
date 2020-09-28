@@ -8,6 +8,8 @@ public enum TemperatureUnit: String, ExpressibleByArgument {
   case celsuis
   /// Fahrenheit Scale
   case fahrenheit
+  /// Kelvin Scale
+  case kelvin
   /// Rankine Scale
   case rankine
   /// Delisle Scale

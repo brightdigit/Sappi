@@ -9,6 +9,7 @@ public extension TemperatureUnit {
   struct Scales {
     static let celsuis = Celsuis.scale
     static let fahrenheit = Fahrenheit.scale
+    static let kelvin = Kelvin.scale
     static let rankine = Rankine.scale
     static let delisle = Delisle.scale
     static let newton = Newton.scale
@@ -96,6 +97,8 @@ public extension TemperatureUnit {
       return Scales.celsuis
     case .fahrenheit:
       return Scales.fahrenheit
+    case .kelvin:
+      return Scales.kelvin
     case .rankine:
       return Scales.rankine
     case .delisle:

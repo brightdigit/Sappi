@@ -208,6 +208,19 @@ __Sappi__ also gives you the option to format the temperature in various scales:
 * `réaumur` Réaumur Scale
 * `rømer` Rømer Scale
 
+So for instance if you want your temperatures in Kelvin, simply use:
+
+```bash
+$ sappi cpu --verbose --temperature-unit=kelvin
+CPU Usage: 20%
+CPU 1 Usage: 31%
+CPU 2 Usage: 13%
+CPU 3 Usage: 26%
+CPU 4 Usage: 11%
+CPU Die Temperature: 324.15°K
+Core 1 Temperature: 331.15°K
+```
+
 For more information, check out [the documentation page for `TemperatureUnit` here.](Documentation/Reference/enums/TemperatureUnit.md)
 
 ## Exporting Your Data
@@ -252,6 +265,79 @@ To export in various formats, use the subcommand `export`. Then use the `--forma
 * `text` - Standard text format _default_
 * `json` - JSON format (ignores  `--value-format` and `--verbose`)
 * `csv` - Comma-Separated Values 
+
+For instance, to export all the CPU values including temperature (in Fahrenheit) in csv format:
+
+```bash
+$ sappi export --format=csv cpu --verbose --temperature-unit=fahrenheit
+CPU,Usage,2005257,2138565
+CPU,CPU 1,1636746,2138725
+CPU,CPU 2,2117266,2138553
+CPU,CPU 3,1772240,2138579
+CPU,CPU 4,2119185,2138551
+CPU,CPU 5,1847133,2138575
+CPU,CPU 6,2119695,2138548
+CPU,CPU 7,1898309,2138571
+CPU,CPU 8,2119747,2138546
+CPU,CPU 9,1941927,2138567
+CPU,CPU 10,2119781,2138544
+CPU,CPU 11,1990327,2138564
+CPU,CPU 12,2120116,2138541
+CPU,CPU 13,2008236,2138560
+CPU,CPU 14,2120426,2138539
+CPU,CPU 15,2032377,2138556
+CPU,CPU 16,2120604,2138535
+CPU,Die Temperature °F,,123.8
+CPU,Core 1 Temperature °F,,123.8
+CPU,Core 2 Temperature °F,,123.8
+CPU,Core 3 Temperature °F,,122.0
+CPU,Core 4 Temperature °F,,123.8
+```
+
+To export the data in JSON format use:
+
+```bash
+sappi export --format=json                     
+{
+  "cpu" : {
+    "cores" : [
+      {
+        "idle" : 1646402,
+        "sum" : 2151846
+      },...
+    ],
+    "cpu" : {
+      "idle" : 2017769,
+      "sum" : 2151686
+    },
+    "temperatures" : [
+      {
+        "key" : "TC0P",
+        "value" : 51
+      },...
+    ]
+  },
+  "memory" : {
+    "free" : 92161,
+    "total" : 131066
+  },
+  "networks" : [
+    {
+      "address" : "192.168.1.76",
+      "family" : 0,
+      "name" : "en0"
+    },...
+  ],
+  "processes" : 561,
+  "volumes" : [
+    {
+      "available" : 694472245248,
+      "name" : "Macintosh HD",
+      "total" : 1000240963584
+    },...
+  ]
+
+```
 
 For more information, check out [the documentation page for `ExportFormat` here.](Documentation/Reference/enums/ExportFormat.md)
 
