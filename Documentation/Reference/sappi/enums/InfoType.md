@@ -3,7 +3,7 @@
 # `InfoType`
 
 ```swift
-public enum InfoType: String, ExpressibleByArgument, CaseIterable, Comparable
+public enum InfoType: String, EnumerableFlag, CaseIterable, Comparable
 ```
 
 Various Metrics, you can request.

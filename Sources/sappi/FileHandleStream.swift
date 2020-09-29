@@ -3,7 +3,7 @@ import Foundation
 public final class FileHandleStream: OutputStream {
   let fileHandle: FileHandle
 
-  private init(_ fileHandle: FileHandle) {
+  internal init(_ fileHandle: FileHandle) {
     self.fileHandle = fileHandle
   }
 

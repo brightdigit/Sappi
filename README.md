@@ -86,19 +86,19 @@ $ mint install brightdigit/Sappi
 
 # Usage 
 
-## Specifying Information via _Arguments_
+## Specifying Information _Flags_
 
-Swift Argument Parser will use any non-flag or non-option and try to parse it into an `InfoType`. There are 5 accepted `InfoType` values:
+Using flags you can specify specific system information. There are 5 accepted `InfoType` values:
 
-* `cpu` CPU and Core Usage. Includes temperature information in verbose mode.
-* `memory` Memory Usage.
-* `disks` Disk Volume Usage.
-* `processes`  Number of Active Processes.
-* `network` Each connected network and address.
+* `--cpu` CPU and Core Usage. Includes temperature information in verbose mode.
+* `--memory` Memory Usage.
+* `--disks` Disk Volume Usage.
+* `--processes`  Number of Active Processes.
+* `--network` Each connected network and address.
 
 
 ```bash
-$ sappi cpu
+$ sappi --cpu
 CPU Usage: 10%
 ```
 
@@ -132,7 +132,7 @@ IPv6 address for en1: 2600:1702:4050:7d30::72f
 Multiple `InfoType` values are accepted:
 
 ```bash
-$ sappi cpu disks
+$ sappi --cpu --disks
 CPU Usage: 10%
 Usage of Media: 42% of 8001.35GB
 Usage of Time Machine: 77% of 5000.28GB
@@ -158,7 +158,7 @@ Values such _CPU_, _Memory_, and _Disk_ allow for different ways to display usag
 * `default` - `percent` for _CPU_ and _Memory, `percentTotal` for _Disks_
 
 ```bash
-$ sappi cpu memory disks --value-format=percent
+$ sappi --cpu --memory --disks --value-format=percent
 CPU Usage: 20%
 Memory Usage: 98%
 Usage of Google Drive: 41%
@@ -171,7 +171,7 @@ Usage of Preboot: 15%
 or
 
 ```bash
-$ sappi cpu memory disks --value-format=ratio  
+$ sappi --cpu --memory --disks --value-format=ratio  
 CPU Usage: 2416633 idle, 3053548 total
 Memory Usage: 43 free, 6504 total
 Usage of Update: 1619969011712 available, 1920140099584 total
@@ -188,7 +188,7 @@ For more information on the different value formats, check out [the documentatio
 __Sappi__ also has the ability to get various temperature available for your hardware. First you'll need to enable the `--verbose` option to get this information:
 
 ```bash
-$ sappi cpu --verbose
+$ sappi --cpu --verbose
 CPU Usage: 20%
 CPU 1 Usage: 31%
 CPU 2 Usage: 13%
@@ -202,6 +202,7 @@ __Sappi__ also gives you the option to format the temperature in various scales:
 
 * `celsuis` Celsuis Scale _default_
 * `fahrenheit` Fahrenheit Scale
+* `kelvin` Kelvin Scale
 * `rankine` Rankine Scale
 * `delisle` Delisle Scale
 * `newton` Newton Scale
@@ -211,7 +212,7 @@ __Sappi__ also gives you the option to format the temperature in various scales:
 So for instance if you want your temperatures in Kelvin, simply use:
 
 ```bash
-$ sappi cpu --verbose --temperature-unit=kelvin
+$ sappi --cpu --verbose --temperature-unit=kelvin
 CPU Usage: 20%
 CPU 1 Usage: 31%
 CPU 2 Usage: 13%
@@ -228,7 +229,7 @@ For more information, check out [the documentation page for `TemperatureUnit` he
 Lastly, __Sappi__ supports exporting data in various formats via the `exporting` subcommand. You've already seen the default subcommand `print` which only supports the `text` format.
 
 ```bash
-$ sappi cpu disks
+$ sappi --cpu --disks
 CPU Usage: 10%
 Usage of Media: 42% of 8001.35GB
 Usage of Time Machine: 77% of 5000.28GB
@@ -238,7 +239,7 @@ Usage of Macintosh HD: 29% of 1000.24GB
 Usage of Preboot: 29% of 1000.24GB
 Usage of Google Drive: 41% of 16.1GB
 Usage of VM: 29% of 1000.24GB
-$ sappi print cpu disks
+$ sappi print --cpu --disks
 CPU Usage: 10%
 Usage of Media: 42% of 8001.35GB
 Usage of Time Machine: 77% of 5000.28GB
@@ -248,7 +249,7 @@ Usage of Macintosh HD: 29% of 1000.24GB
 Usage of Preboot: 29% of 1000.24GB
 Usage of Google Drive: 41% of 16.1GB
 Usage of VM: 29% of 1000.24GB
-$ sappi export cpu disks --export-format=text
+$ sappi export --cpu --disks --export-format=text
 CPU Usage: 10%
 Usage of Media: 42% of 8001.35GB
 Usage of Time Machine: 77% of 5000.28GB
@@ -269,7 +270,7 @@ To export in various formats, use the subcommand `export`. Then use the `--forma
 For instance, to export all the CPU values including temperature (in Fahrenheit) in csv format:
 
 ```bash
-$ sappi export --format=csv cpu --verbose --temperature-unit=fahrenheit
+$ sappi export --format=csv --cpu --verbose --temperature-unit=fahrenheit
 CPU,Usage,2005257,2138565
 CPU,CPU 1,1636746,2138725
 CPU,CPU 2,2117266,2138553
