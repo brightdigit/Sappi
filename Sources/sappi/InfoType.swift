@@ -3,7 +3,7 @@ import ArgumentParser
 /**
  Various Metrics, you can request.
  */
-public enum InfoType: String, ExpressibleByArgument, CaseIterable, Comparable {
+public enum InfoType: String, EnumerableFlag, CaseIterable, Comparable {
   /**
    CPU and Core Usage. Includes temperature information in verbose mode.
    */

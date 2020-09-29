@@ -10,6 +10,7 @@
 
 ## Structs
 
+-   [AnyStream](structs/AnyStream.md)
 -   [CSVFormatter](structs/CSVFormatter.md)
 -   [CSVFormatter.Entry](structs/CSVFormatter.Entry.md)
 -   [JSONFormatter](structs/JSONFormatter.md)

@@ -1,7 +1,7 @@
 import ArgumentParser
 
 public struct SappiOptions: ParsableArguments {
-  @Argument(help: "Set of system information data, you'd like to receive.")
+  @Flag(help: "Set of system information data, you'd like to receive.")
   public var infoTypes = InfoType.allCases
 
   @Option(help: "Format of value types")
