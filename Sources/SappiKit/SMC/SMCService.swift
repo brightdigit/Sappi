@@ -11,7 +11,9 @@
       let matchingDictionary: CFMutableDictionary = IOServiceMatching("AppleSMC")
       result = IOServiceGetMatchingServices(kIOMasterPortDefault, matchingDictionary, &iterator)
       if result != kIOReturnSuccess {
-        print("Error IOServiceGetMatchingServices(): " + (String(cString: mach_error_string(result), encoding: String.Encoding.ascii) ?? "unknown error"))
+        print(
+          "Error IOServiceGetMatchingServices(): " + (String(cString: mach_error_string(result),
+                                                             encoding: String.Encoding.ascii) ?? "unknown error"))
         return
       }
 
@@ -34,6 +36,7 @@
       return IOServiceClose(conn)
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     public func getValue(_ key: String) -> Double? {
       var result: kern_return_t = 0
       var val = SMCVal(key)

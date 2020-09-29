@@ -1,13 +1,15 @@
-protocol TemperatureUnitScale {
+public protocol TemperatureUnitScale {
   static var factor: Double { get }
   static var offset: Double { get }
   static var suffix: String { get }
 }
 
-extension TemperatureUnit {
+// swiftlint:disable nesting
+public extension TemperatureUnit {
   struct Scales {
     static let celsuis = Celsuis.scale
     static let fahrenheit = Fahrenheit.scale
+    static let kelvin = Kelvin.scale
     static let rankine = Rankine.scale
     static let delisle = Delisle.scale
     static let newton = Newton.scale
@@ -95,6 +97,8 @@ extension TemperatureUnit {
       return Scales.celsuis
     case .fahrenheit:
       return Scales.fahrenheit
+    case .kelvin:
+      return Scales.kelvin
     case .rankine:
       return Scales.rankine
     case .delisle:

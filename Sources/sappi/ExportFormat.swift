@@ -1,13 +1,16 @@
 import ArgumentParser
 import SappiKit
 
-enum ExportFormat: String, ExpressibleByArgument {
+public enum ExportFormat: String, ExpressibleByArgument {
+  /// Standard Text Format
   case text
+  /// JSON Format
   case json
+  /// CSV Format
   case csv
 }
 
-extension ExportFormat {
+public extension ExportFormat {
   var formatter: Formatter {
     switch self {
     case .text:

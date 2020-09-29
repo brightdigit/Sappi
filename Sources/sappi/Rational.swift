@@ -1,6 +1,6 @@
 import SappiKit
 
-protocol Rational {
+public protocol Rational {
   var denominator: Int { get }
   var numerator: Int { get }
   var shouldUseInverse: Bool { get }
@@ -10,8 +10,8 @@ protocol Rational {
 
 extension Rational {
   var labelledSum: String {
-    if let su = self as? SummableUnits {
-      return su.labelledSum
+    if let units = self as? SummableUnits {
+      return units.labelledSum
     } else {
       return "\(denominator)"
     }
@@ -45,79 +45,79 @@ extension Rational {
 }
 
 extension CPUData: Rational {
-  var denominator: Int {
+  public var denominator: Int {
     return sum
   }
 
-  var numerator: Int {
+  public var numerator: Int {
     return idle
   }
 
-  var shouldUseInverse: Bool {
+  public var shouldUseInverse: Bool {
     return true
   }
 
-  var label: String {
+  public var label: String {
     return "idle"
   }
 
-  var defaultFormat: RatioFormat {
+  public var defaultFormat: RatioFormat {
     return .percent
   }
 }
 
 extension Memory: Rational {
-  var denominator: Int {
+  public var denominator: Int {
     return total
   }
 
-  var numerator: Int {
+  public var numerator: Int {
     return free
   }
 
-  var shouldUseInverse: Bool {
+  public var shouldUseInverse: Bool {
     return true
   }
 
-  var label: String {
+  public var label: String {
     return "free"
   }
 
-  var defaultFormat: RatioFormat {
+  public var defaultFormat: RatioFormat {
     return .percent
   }
 }
 
 extension Volume: SummableUnits {
-  static var units: String {
+  public static var units: String {
     return "GB"
   }
 
-  static var factor: Int {
+  public static var factor: Int {
     return 1_000_000_000
   }
 
-  static var precision: Int {
+  public static var precision: Int {
     return 2
   }
 
-  var denominator: Int {
+  public var denominator: Int {
     return total
   }
 
-  var numerator: Int {
+  public var numerator: Int {
     return available
   }
 
-  var shouldUseInverse: Bool {
+  public var shouldUseInverse: Bool {
     return true
   }
 
-  var label: String {
+  public var label: String {
     return "available"
   }
 
-  var defaultFormat: RatioFormat {
+  public var defaultFormat: RatioFormat {
     return .percentTotal
   }
 }

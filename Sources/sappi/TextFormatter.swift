@@ -1,7 +1,7 @@
 import SappiKit
 
-struct TextFormatter: Formatter {
-  func format<Target>(_ systemInfo: SystemInfo, withOptions options: SappiOptions, to target: inout Target) where Target: TextOutputStream {
+public struct TextFormatter: Formatter {
+  public func format<Target>(_ systemInfo: SystemInfo, withOptions options: SappiOptions, to target: inout Target) where Target: TextOutputStream {
     let typeSet = Set(options.infoTypes).sorted()
     let systemInfo = SystemInfo()
     for type in typeSet {
