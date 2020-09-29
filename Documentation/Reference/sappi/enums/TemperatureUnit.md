@@ -25,6 +25,14 @@ case fahrenheit
 
 Fahrenheit Scale
 
+### `kelvin`
+
+```swift
+case kelvin
+```
+
+Kelvin Scale
+
 ### `rankine`
 
 ```swift
